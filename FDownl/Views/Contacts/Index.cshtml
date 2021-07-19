@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Contacts";
+}
+
+<div class="container py-3" style="margin-bottom: 80px">
+    <div>
+        <h4 class="text-center">Contact Us</h4>
+        <hr />
+            <form class="row" action="https://formspree.io/f/xjvpeqod" method="POST">
+                <div class="form-group col-12 col-md-6">
+                    <label for="name">Name</label>
+                    <input name="name" type="text" class="form-control" id="name" placeholder="Michael Knight" required>
+                </div>
+                <div class="form-group col-12 col-md-6">
+                    <label for="email">Email</label>
+                    <input name="_replyto" type="email" class="form-control" id="email" placeholder="michaelknight@fdownl.ga" required>
+                </div>
+                <div class="form-group col-12">
+                    <label for="message">Message</label>
+                    <textarea name="message" class="form-control" id="message" placeholder="Please write your message here" rows="5" required></textarea>
+                </div>
+                <div class="col-md-4 offset-md-4">
+                    <button type="submit" class="w-100 btn btn-success">Send</button>
+                </div>
+            </form>
+    </div>
+</div>
