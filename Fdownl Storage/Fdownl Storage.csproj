@@ -17,20 +17,31 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FDownl Shared Resources\FDownl Shared Resources.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DotNetZip" Version="1.15.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.0">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="MySqlConnector" Version="1.2.0" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2" />
-    <PackageReference Include="Quartz" Version="3.2.3" />
-    <PackageReference Include="Quartz.AspNetCore" Version="3.2.3" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.1" />
+    <PackageReference Include="Quartz" Version="3.3.2" />
+    <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.3.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Uploads\Main\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="appsettings.json" />
   </ItemGroup>
 
 </Project>

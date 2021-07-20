@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using FDownl.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -13,18 +12,18 @@ namespace FDownl.Controllers
     [Route("api/[controller]/[action]")]
     public class StorageServersController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<StorageServersController> _logger;
         private readonly DatabaseContext _databaseContext;
 
-        public StorageServersController(ILogger<HomeController> logger, DatabaseContext databaseContext)
+        public StorageServersController(ILogger<StorageServersController> logger, DatabaseContext databaseContext)
         {
             _logger = logger;
             _databaseContext = databaseContext;
         }
 
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAsync()
         {
-            List<StorageServer> storageServers = await _databaseContext.StorageServers.ToListAsync();
+            var storageServers = await _databaseContext.StorageServers.ToListAsync();
             return Json(storageServers);
         }
     }

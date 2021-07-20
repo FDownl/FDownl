@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FDownl.Models
+namespace FDownl_Shared_Resources.Models
 {
     public class UploadedFile
     {

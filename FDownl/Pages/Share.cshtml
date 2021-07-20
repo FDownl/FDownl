@@ -1,29 +1,32 @@
-﻿
+﻿@page "{id:string}"
+@model ShareModel
+
 @{
-    ViewData["Title"] = (Model == null ? "Not Found" : Model.Filename) + " | FDownl";
+    var file = Model.UploadedFile;
+    ViewData["Title"] = (file == null ? "Not Found" : file.Filename) + " | FDownl";
 }
 
 <div class="container py-3">
     <div class="text-center">
-        @if (Model == null)
+        @if (file == null)
         {
             <h3>That file does not exist in our servers.</h3>
         }
         else
         {
-            <h4 class="mb-3">@Model.Filename</h4>
-            string fileExtension = System.IO.Path.GetExtension(Model.Filename);
+            <h4 class="mb-3">@file.Filename</h4>
+            string fileExtension = System.IO.Path.GetExtension(file.Filename);
             if (fileExtension == ".jpeg" || fileExtension == ".jpg" || fileExtension == ".png"
                 || fileExtension == ".gif")
             {
                 <div>
-                    <img class="mw-100 mb-3" src="https://@(Model.Hostname)/@(Model.RandomId)-@(Model.Filename)" alt="">
+                    <img class="mw-100 mb-3" src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)" alt="">
                 </div>
             }
             else if (fileExtension == ".mp3" || fileExtension == ".wav")
             {
                 <div>
-                    <audio class="mw-100 mb-3" src="https://@(Model.Hostname)/@(Model.RandomId)-@(Model.Filename)" controls>
+                    <audio class="mw-100 mb-3" src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)" controls>
                         Your browser doesn't support HTML5 audio.
                     </audio>
                 </div>
@@ -32,12 +35,12 @@
             {
                 <div>
                     <video class="mw-100 mb-3" controls>
-                        <source src="https://@(Model.Hostname)/@(Model.RandomId)-@(Model.Filename)" type="video/mp4" />
+                        <source src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)" type="video/mp4" />
                         Your browser doesn't support HTML5 video.
                     </video>
                 </div>
             }
-            <a id="download-button" class="btn btn-outline-dark" href="https://@(Model.Hostname)/@(Model.RandomId)-@(Model.Filename)">Download File</a>
+            <a id="download-button" class="btn btn-outline-dark" href="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)">Download File</a>
         }
         @ViewData["DisplayFile"]
     </div>

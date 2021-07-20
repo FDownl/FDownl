@@ -6,6 +6,8 @@ using System.Net.NetworkInformation;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using FDownl.Models;
+using FDownl_Shared_Resources;
+using FDownl_Shared_Resources.Models;
 using Fdownl_Storage.Models;
 using Ionic.Zip;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing.Constraints;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -43,7 +46,7 @@ namespace Fdownl_Storage.Controllers
             };
             if (ModelState.IsValid)
             {
-                if (ClientValidation())
+                if (await ClientValidation())
                 {
                     if (!IsDiskFull())
                     {
@@ -70,27 +73,27 @@ namespace Fdownl_Storage.Controllers
             return Json(result);
         }
 
-        private bool ClientValidation()
+        private async Task<bool> ClientValidation()
         {
             string ip = HttpContext.Request.Headers["X-Forwarded-For"];
-            List<UploadedFile> uploadedFiles = _databaseContext.UploadedFiles
+            var uploadedFiles = await _databaseContext.UploadedFiles
                 .Where(x => x.Ip == ip)
-                .ToList();
-            List<UploadedFile> uploadedFilesLastMinute = uploadedFiles
+                .ToListAsync();
+            var uploadedFilesLastMinute = uploadedFiles
                 .Where(x => DateTime.UtcNow - x.UploadedAt < TimeSpan.FromMinutes(1))
                 .ToList();
-            List<UploadedFile> uploadedFilesLastHour = uploadedFiles
+            var uploadedFilesLastHour = uploadedFiles
                 .Where(x => DateTime.UtcNow - x.UploadedAt < TimeSpan.FromHours(1))
                 .ToList();
-            List<UploadedFile> uploadedFilesLastDay = uploadedFiles
+            var uploadedFilesLastDay = uploadedFiles
                 .Where(x => DateTime.UtcNow - x.UploadedAt < TimeSpan.FromDays(1))
                 .ToList();
             long sumSizeLastMinute = 0;
             long sumSizeLastHour = 0;
             long sumSizeLastDay = 0;
-            foreach (UploadedFile f in uploadedFilesLastMinute) { sumSizeLastMinute += f.Size; }
-            foreach (UploadedFile f in uploadedFilesLastHour) { sumSizeLastHour += f.Size; }
-            foreach (UploadedFile f in uploadedFilesLastDay) { sumSizeLastDay += f.Size; }
+            foreach (var f in uploadedFilesLastMinute) { sumSizeLastMinute += f.Size; }
+            foreach (var f in uploadedFilesLastHour) { sumSizeLastHour += f.Size; }
+            foreach (var f in uploadedFilesLastDay) { sumSizeLastDay += f.Size; }
             //50MB limit per minute
             if (sumSizeLastMinute > 50 * 1024 * 1024) { return false; }
             //150MB limit per hour
@@ -103,7 +106,7 @@ namespace Fdownl_Storage.Controllers
 
         private async Task<string> UploadAsync(UploadForm uploadForm)
         {
-            UploadedFile uploadedFile = new UploadedFile();
+            var uploadedFile = new UploadedFile();
 
             string randomIdentifier = GenerateRandomIdentifier();
 

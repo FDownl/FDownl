@@ -21,18 +21,18 @@ namespace FDownl
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string connectionString = Configuration.GetValue<string>("ConnectionString");
+
             services.AddDbContextPool<DatabaseContext>(
-                options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
-                new MySqlServerVersion(new Version(5, 6)))
+                options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
             );
 
-            services.AddControllersWithViews();
+            services.AddControllers();
+            services.AddRazorPages();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -42,7 +42,6 @@ namespace FDownl
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
@@ -50,14 +49,9 @@ namespace FDownl
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "share",
-                    pattern: "share/{id}",
-                    defaults: new { controller = "Share", action = "Index" });
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
