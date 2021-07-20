@@ -1,4 +1,5 @@
-﻿using FDownl_Shared_Resources.Models;
+﻿using FDownl_Shared_Resources;
+using FDownl_Shared_Resources.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace FDownl.Pages
         private readonly ILogger<ShareModel> _logger;
         private readonly DatabaseContext _context;
 
-        public UploadedFile UploadedFile { get; set; };
+        public UploadedFile UploadedFile { get; set; }
 
         public ShareModel(ILogger<ShareModel> logger, DatabaseContext context) {
             _logger = logger;
