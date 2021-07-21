@@ -34,8 +34,10 @@ namespace FDownl
             services.AddRazorPages();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DatabaseContext context)
         {
+			context.Database.Migrate();
+			
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -53,9 +55,7 @@ namespace FDownl
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
                 endpoints.MapControllerRoute(
                     name: "share-shortcut",
                     pattern: "{id}",
