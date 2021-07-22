@@ -31,7 +31,7 @@ namespace Fdownl_Storage
         {
             string connectionString = Configuration.GetValue<string>("ConnectionString");
 
-            services.AddDbContextPool<DatabaseContext>(
+            services.AddDbContext<DatabaseContext>(
                 options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
             );
 
