@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FDownl_Shared_Resources;
 using Fdownl_Storage.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
@@ -26,6 +27,7 @@ namespace Fdownl_Storage.Controllers
         }
 
         [Route("/{filename}")]
+        [EnableCors]
         public IActionResult Index(string fileName)
         {
             string contentRootPath = _webHostEnvironment.ContentRootPath;

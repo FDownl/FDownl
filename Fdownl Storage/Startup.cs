@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FDownl_Shared_Resources;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,8 @@ namespace Fdownl_Storage
 
             services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
+            services.AddCors();
+
             services.AddControllers();
         }
 
@@ -63,15 +66,11 @@ namespace Fdownl_Storage
 
             app.UseRouting();
 
+            app.UseCors(x => x.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader());
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapControllerRoute(
-                    name: "downloads",
-                    pattern: "{fileName}",
-                    defaults: new { controller = "Download", action = "Index" });
+                endpoints.MapControllers();
             });
         }
     }

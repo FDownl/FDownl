@@ -10,6 +10,7 @@ using FDownl_Shared_Resources;
 using FDownl_Shared_Resources.Models;
 using Fdownl_Storage.Models;
 using Ionic.Zip;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,8 @@ namespace Fdownl_Storage.Controllers
         }
 
         [HttpPost]
+        [Route("/upload")]
+        [EnableCors]
         [RequestSizeLimit(52428800)] // 50MB = 50 * 1024 * 1024
         public async Task<IActionResult> Index(UploadForm uploadForm)
         {
@@ -175,16 +178,12 @@ namespace Fdownl_Storage.Controllers
                 {
                     string safeFilename = SanitizeFileName(file.FileName);
                     string savePath = Path.Combine(tempFolder, safeFilename);
-                    using (FileStream stream = new FileStream(savePath, FileMode.Create))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
+                    using var stream = new FileStream(savePath, FileMode.Create);
+                    await file.CopyToAsync(stream);
                 }
-                using (ZipFile zip = new ZipFile())
-                {
-                    zip.AddDirectory(tempFolder);
-                    zip.Save(fullSavePath);
-                }
+                using var zip = new ZipFile();
+                zip.AddDirectory(tempFolder);
+                zip.Save(fullSavePath);
                 Directory.Delete(tempFolder, true);
             }
 
@@ -229,12 +228,9 @@ namespace Fdownl_Storage.Controllers
             return true;
         }
 
-        private void CreateDirectoryIfNotExists(string path)
+        private static void CreateDirectoryIfNotExists(string path)
         {
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
         }
 
         private string GenerateRandomIdentifier()
@@ -246,7 +242,7 @@ namespace Fdownl_Storage.Controllers
             return randomHex;
         }
 
-        private string SanitizeFileName(string name)
+        private static string SanitizeFileName(string name)
         {
             var invalids = Path.GetInvalidFileNameChars();
             var newName = string.Join("_", name.Split(invalids, StringSplitOptions.RemoveEmptyEntries)).TrimEnd('.');

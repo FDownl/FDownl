@@ -5,12 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="appsettings.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="appsettings.json" />
-    <None Include="Pages\Shared\_Layout.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
