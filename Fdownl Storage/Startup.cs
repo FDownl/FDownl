@@ -34,10 +34,15 @@ namespace Fdownl_Storage
                 options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
             );
 
-            services.AddQuartz(x => x.ScheduleJob<FileDeletionJob>(trigger => trigger
-            .WithIdentity("file_deletion_trigger")
-            .WithSimpleSchedule(x => x.RepeatForever().WithIntervalInMinutes(1)))
-            );
+            services.AddQuartz(x =>
+            {
+                x.UseMicrosoftDependencyInjectionScopedJobFactory();
+                x.ScheduleJob<FileDeletionJob>(trigger => trigger
+                .WithIdentity("file_deletion_trigger")
+                .WithSimpleSchedule(x => x.RepeatForever().WithIntervalInMinutes(1)));
+            });
+
+            services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
             services.AddControllers();
         }

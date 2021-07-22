@@ -56,10 +56,6 @@ namespace FDownl
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
-                endpoints.MapControllerRoute(
-                    name: "share-shortcut",
-                    pattern: "{id}",
-                    defaults: new { controller = "Share", action = "Index" });
             });
         }
     }

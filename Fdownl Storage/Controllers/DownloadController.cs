@@ -25,21 +25,21 @@ namespace Fdownl_Storage.Controllers
             _databaseContext = databaseContext;
         }
 
+        [Route("/{filename}")]
         public IActionResult Index(string fileName)
         {
             string contentRootPath = _webHostEnvironment.ContentRootPath;
             string mainUploadPath = Path.Combine(contentRootPath, "Uploads", "Main");
             string filePath = Path.Combine(mainUploadPath, fileName);
 
-            string originalFileName = fileName.Substring(fileName.IndexOf('-') + 1);
+            string originalFileName = fileName[(fileName.IndexOf('-') + 1)..];
 
             if (!System.IO.File.Exists(filePath))
             {
                 return NotFound();
             }
 
-            string contentType;
-            if(!(new FileExtensionContentTypeProvider().TryGetContentType(fileName, out contentType)))
+            if (!(new FileExtensionContentTypeProvider().TryGetContentType(fileName, out string contentType)))
             {
                 contentType = "application/octet-stream";
             }
