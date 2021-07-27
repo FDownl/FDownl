@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,6 +12,7 @@ namespace FDownl_Shared_Resources.Models
         public string Ip { get; set; }
         public string Hostname { get; set; }
         public string Location { get; set; }
-        public bool IsFull { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }
