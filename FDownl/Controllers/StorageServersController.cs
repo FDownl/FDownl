@@ -24,8 +24,18 @@ namespace FDownl.Controllers
 
         public async Task<IActionResult> GetAsync()
         {
-            var storageServers = await _databaseContext.StorageServers.ToListAsync();
+            var storageServers = await _databaseContext.StorageServers
+                .Select(x => new ApiStorageServer { Id = x.Id, Ip = x.Ip, Hostname = x.Hostname, Location = x.Location} )
+                .ToListAsync();
             return Json(storageServers);
+        }
+
+        public class ApiStorageServer
+        {
+            public int Id { get; set; }
+            public string Ip { get; set; }
+            public string Hostname { get; set; }
+            public string Location { get; set; }
         }
     }
 }
