@@ -1,3 +1,16 @@
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    color: inherit;
+}
+
+.cool-link {
+    border-bottom: 2px solid;
+}
+
 html {
     position: relative;
     min-height: 100%;
@@ -97,11 +110,6 @@ input {
     position: absolute;
     display: inline-block;
     color: #000000;
-}
-
-#download-button {
-    border-width: medium;
-    border-radius: 30px;
 }
 
 .footer {

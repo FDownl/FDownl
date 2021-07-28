@@ -6,13 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Uploads\Temp\**" />
+    <Compile Remove="Uploads\**" />
     <Compile Remove="wwwroot\**" />
-    <Content Remove="Uploads\Temp\**" />
+    <Content Remove="Uploads\**" />
     <Content Remove="wwwroot\**" />
-    <EmbeddedResource Remove="Uploads\Temp\**" />
+    <EmbeddedResource Remove="Uploads\**" />
     <EmbeddedResource Remove="wwwroot\**" />
-    <None Remove="Uploads\Temp\**" />
+    <None Remove="Uploads\**" />
     <None Remove="wwwroot\**" />
   </ItemGroup>
 
@@ -31,10 +31,6 @@
     <PackageReference Include="Quartz" Version="3.3.2" />
     <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.3.2" />
     <PackageReference Include="Quartz.Extensions.Hosting" Version="3.3.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Uploads\Main\" />
   </ItemGroup>
 
   <ItemGroup>

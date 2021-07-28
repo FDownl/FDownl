@@ -80,18 +80,18 @@ function handleFiles(files) {
 	var filesArr = Array.prototype.slice.call(files);
 
 	Promise.all(filesArr.map(async (f) => { filesSize += f.size; })).then(() => {
-		if (filesSize > 50000000) {
-			alert("Uploaded files are bigger than 50MB!");
+		if (filesSize > 100000000) {
+			alert("Uploaded files are bigger than 100MB!");
 			return;
 		}
 		$("#file-selection").fadeIn(1000);
 		filesArr.forEach(function (f, i) {
 			var f = files[i];
-			var button = "<button id=\"" + i + "\" onclick=\"removeElement(this.id)\" class=\"btn btn-outline-danger btn-sm float-right remove-file-btn\">X</button>";
+			var button = "<button id=\"" + i + "\" onclick=\"removeElement(this.id)\" class=\"btn btn-outline-danger btn-sm float-end remove-file-btn\">X</button>";
 			if (f.type.match("image.*")) {
 				var reader = new FileReader();
 				reader.onload = function (e) {
-					var html = "<li class=\"list-group-item\"><div class=\"row\"><img src=\"" + e.target.result + "\"><span class=\"my-auto file-text\">" + f.name + "</span>" + button + "</div></li>";
+					var html = "<li class=\"list-group-item\"><div class=\"d-flex\"><img src=\"" + e.target.result + "\"><span class=\"my-auto file-text\">" + f.name + "</span>" + button + "</div></li>";
 					selDiv.innerHTML += html;
 				}
 				reader.readAsDataURL(f);

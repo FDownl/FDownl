@@ -10,10 +10,8 @@
         <div class="col-md-6 text-center p-3">
             <h4 class="mb-3">File Selection</h4>
             <div id="drop-area">
-                <div class="custom-file">
-                    <label for="files" class="custom-file-label">Drop/Select files</label>
-                    <input type="file" class="custom-file-input" id="files" multiple required>
-                </div>
+                    <label for="files" class="form-label">Drop/Select files</label>
+                    <input class="form-control" type="file" id="files" multiple required>
             </div>
             <div id="page-mask"></div>
         </div>
@@ -21,7 +19,7 @@
             <h4 class="mb-3">Options</h4>
             <div class="my-2">
                 <label for="lifetime">Lifetime</label>
-                <select class="custom-select" id="lifetime" name="lifetime" required>
+                <select class="form-select" id="lifetime" name="lifetime" required>
                     <option value="604800">7 days</option>
                     <option value="518400">6 days</option>
                     <option value="432000">5 days</option>
@@ -33,7 +31,7 @@
             </div>
             <div class="my-2">
                 <label for="serverlocation">Server Location</label>
-                <select class="custom-select" id="serverlocation" required>
+                <select class="form-select" id="serverlocation" required>
                     <option value="">Loading...</option>
                 </select>
             </div>
@@ -54,4 +52,3 @@
     <ul class="list-group" id="selectedFiles"></ul>
 </div>
 </div>
-<script src="~/js/script.js"></script>
