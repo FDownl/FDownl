@@ -29,7 +29,7 @@
         var time = (deletedAt - now).Add(TimeSpan.FromMinutes(1));
         if (time.Days != 0) timeToDeletion += time.Days + "d ";
         if (time.Hours != 0) timeToDeletion += time.Hours + "h ";
-        if (time.Minutes != 0) timeToDeletion += time.Hours + "m ";
+        if (time.Minutes != 0) timeToDeletion += time.Minutes + "m ";
         long s;
         if ((s = file.Size / (1024 * 1024)) != 0) size = s + "MB";
         else if ((s = file.Size / 1024) != 0) size = s + "KB";
@@ -55,7 +55,7 @@
                         <li class="list-group-item"><b>Password: </b>No</li>
                     </ul>
                     <div class="m-3 mt-auto">
-                        <a class="btn btn-outline-dark text-center w-100 border-5 py-3 fw-bold" href="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)">DOWNLOAD FILE</a>
+                        <a class="btn btn-outline-dark text-center w-100 border-3 py-3 fw-bold" href="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)">DOWNLOAD FILE</a>
                     </div>
                 </div>
                 <div class="col-md-6 d-flex flex-column">
