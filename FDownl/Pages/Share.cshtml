@@ -6,7 +6,8 @@
 
     DateTime now = default;
     DateTime deletedAt = default;
-    if (file != null) {
+    if (file != null)
+    {
         now = DateTime.UtcNow;
         deletedAt = file.UploadedAt.AddSeconds(file.Lifetime);
         if (deletedAt < now)
@@ -21,7 +22,8 @@
     string timeToDeletion = "";
     string size = "";
 
-    if (file != null) {
+    if (file != null)
+    {
         string extension = System.IO.Path.GetExtension(file.Filename);
         isImage = new string[] { ".jpeg", ".jpg", ".png", ".gif" }.Contains(extension);
         isAudio = new string[] { ".mp3", ".wav" }.Contains(extension);
@@ -59,37 +61,43 @@
                     </div>
                 </div>
                 <div class="col-md-6 d-flex flex-column">
-                        @{
-                            if (isImage)
-                            {
+                    @{
+                        if (isImage)
+                        {
+                            <div class="m-auto">
                                 <div class="m-3">
-                                    <img class="mw-100" src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)" alt="">
+                                    <img class="mw-100" src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)">
                                 </div>
-                            }
-                            else if (isAudio)
-                            {
+                            </div>
+                        }
+                        else if (isAudio)
+                        {
+                            <div class="m-auto">
                                 <div class="m-3">
                                     <audio class="mw-100" src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)" controls>
                                         Your browser doesn't support HTML5 audio.
                                     </audio>
                                 </div>
-                            }
-                            else if (isVideo)
-                            {
+                            </div>
+                        }
+                        else if (isVideo)
+                        {
+                            <div class="m-auto">
                                 <div class="m-3">
                                     <video class="mw-100" controls>
                                         <source src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)" type="video/mp4" />
                                         Your browser doesn't support HTML5 video.
                                     </video>
                                 </div>
-                            }
-                            else
-                            {
-                                <div class="m-auto">
-                                    <p>Looks like this file cannot be previewed.</p>
-                                </div>
-                            }
+                            </div>
                         }
+                        else
+                        {
+                            <div class="m-auto">
+                                <p>Looks like this file cannot be previewed.</p>
+                            </div>
+                        }
+                    }
                 </div>
             </div>
         }
