@@ -121,6 +121,11 @@ function removeElement(i) {
     }
 }
 
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const code = urlParams.get('code');
+document.getElementById("coupon_code").value = code;
+
 var selector = document.getElementById("serverlocation");
 var upload = document.getElementById("upload_btn");
 
