@@ -1,0 +1,54 @@
+﻿@page
+
+@{
+    ViewData["Title"] = "FDownl";
+}
+
+<div style="margin-bottom: 80px">
+    <div class="container py-3">
+        <form class="row" enctype="multipart/form-data" method="post" id="form_post">
+            <div class="col-md-6 text-center p-3">
+                <h4 class="mb-3">File Selection</h4>
+                <div id="drop-area">
+                    <label for="files" class="form-label">Drop/Select files</label>
+                    <input class="form-control" type="file" id="files" multiple required>
+                </div>
+                <div id="page-mask"></div>
+            </div>
+            <div class="col-md-6 text-center p-3">
+                <h4 class="mb-3">Options</h4>
+                <div class="my-2">
+                    <label for="lifetime">Lifetime</label>
+                    <select class="form-select" id="lifetime" name="lifetime" required>
+                        <option value="604800">7 days</option>
+                        <option value="518400">6 days</option>
+                        <option value="432000">5 days</option>
+                        <option value="345600">4 days</option>
+                        <option value="259200">3 days</option>
+                        <option value="172800">2 days</option>
+                        <option value="86400">1 day</option>
+                    </select>
+                </div>
+                <div class="my-2">
+                    <label for="serverlocation">Server Location</label>
+                    <select class="form-select" id="serverlocation" required>
+                        <option value="">Loading...</option>
+                    </select>
+                </div>
+                <div class="my-2">
+                    <label for="code">Coupon Code</label>
+                    <input class="form-control" type="text" name="code" id="coupon_code" placeholder="Please enter your coupon code" />
+                </div>
+                <input type="submit" class="btn btn-primary w-100 mt-2" id="upload_btn" value="Upload" disabled />
+            </div>
+        </form>
+        <div id="progress-wrp">
+            <div class="progress-bar"></div>
+            <div class="status">0%</div>
+        </div>
+    </div>
+    <div class="container mb-3 p-3 bg-light border rounded" id="file-selection">
+        <h4 class="mb-2">Selected files</h4>
+        <ul class="list-group" id="selectedFiles"></ul>
+    </div>
+</div>

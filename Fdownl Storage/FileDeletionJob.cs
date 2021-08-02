@@ -1,5 +1,6 @@
-﻿using Fdownl_Storage.Models;
+﻿using FDownl_Shared_Resources;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Quartz;
@@ -25,34 +26,32 @@ namespace Fdownl_Storage
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public Task Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
+            using var scope = _serviceProvider.CreateScope();
+            var databaseContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+
             string serverName = Environment.MachineName;
 
-            using (IServiceScope scope = _serviceProvider.CreateScope())
+            _logger.LogInformation("Running file deletion schedule");
+
+            var filesToDelete = await databaseContext.UploadedFiles.Where(
+                x => x.ServerName == serverName
+                && x.UploadedAt.AddSeconds(x.Lifetime) < DateTime.UtcNow
+                ).ToListAsync();
+            
+            foreach (var file in filesToDelete)
             {
-                _logger.LogInformation("Running file deletion schedule");
-                using (DatabaseContext databaseContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>())
-                {
-                    List<UploadedFile> filesToDelete = databaseContext.UploadedFiles
-                        .Where(x => x.ServerName == serverName
-                            && x.UploadedAt.AddSeconds(x.Lifetime) < DateTime.UtcNow)
-                        .ToList();
-                    foreach (UploadedFile file in filesToDelete)
-                    {
-                        string contentRootPath = _webHostEnvironment.ContentRootPath;
-                        string mainUploadPath = Path.Combine(contentRootPath, "Uploads", "Main");
-                        if (Directory.Exists(mainUploadPath))
-                        {
-                            string filePath = Path.Combine(mainUploadPath, file.RandomId + "-" + file.Filename);
-                            databaseContext.UploadedFiles.Remove(file);
-                            databaseContext.SaveChanges();
-                            File.Delete(filePath);
-                        }
-                    }
-                }
+                 string contentRootPath = _webHostEnvironment.ContentRootPath;
+                 string mainUploadPath = Path.Combine(contentRootPath, "Uploads", "Main");
+                 if (Directory.Exists(mainUploadPath))
+                 {
+                      string filePath = Path.Combine(mainUploadPath, file.RandomId + "-" + file.Filename);
+                      databaseContext.UploadedFiles.Remove(file);
+                      await databaseContext.SaveChangesAsync();
+                      File.Delete(filePath);
+                 }
             }
-            return Task.CompletedTask;
         }
     }
 }

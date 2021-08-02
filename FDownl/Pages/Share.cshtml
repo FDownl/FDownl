@@ -1,0 +1,105 @@
+﻿@page "/{id}"
+@model ShareModel
+
+@{
+    var file = Model.UploadedFile;
+
+    DateTime now = default;
+    DateTime deletedAt = default;
+    if (file != null)
+    {
+        now = DateTime.UtcNow;
+        deletedAt = file.UploadedAt.AddSeconds(file.Lifetime);
+        if (deletedAt < now)
+            file = null;
+    }
+
+    ViewData["Title"] = (file == null ? "Not Found" : file.Filename) + " | FDownl";
+
+    bool isImage = false;
+    bool isAudio = false;
+    bool isVideo = false;
+    string timeToDeletion = "";
+    string size = "";
+
+    if (file != null)
+    {
+        string extension = System.IO.Path.GetExtension(file.Filename);
+        isImage = new string[] { ".jpeg", ".jpg", ".png", ".gif" }.Contains(extension);
+        isAudio = new string[] { ".mp3", ".wav" }.Contains(extension);
+        isVideo = new string[] { ".mp4" }.Contains(extension);
+        var time = (deletedAt - now).Add(TimeSpan.FromMinutes(1));
+        if (time.Days != 0) timeToDeletion += time.Days + "d ";
+        if (time.Hours != 0) timeToDeletion += time.Hours + "h ";
+        if (time.Minutes != 0) timeToDeletion += time.Minutes + "m ";
+        long s;
+        if ((s = file.Size / (1024 * 1024)) != 0) size = s + "MB";
+        else if ((s = file.Size / 1024) != 0) size = s + "KB";
+        else size = file.Size + "B";
+    }
+}
+
+<div class="container py-3">
+    <div class="text-center">
+        @if (file == null)
+        {
+            <h4 class="m-3">That file does not exist in our servers.</h4>
+        }
+        else
+        {
+            <div class="row m-3">
+                <h4 class="text-center">@file.Filename</h4>
+                <hr />
+                <div class="col-md-6 text-start d-flex flex-column">
+                    <ul class="list-group m-3">
+                        <li class="list-group-item"><b>Size: </b>@size</li>
+                        <li class="list-group-item"><b>Lifetime: </b>@timeToDeletion</li>
+                        <li class="list-group-item"><b>Password: </b>No</li>
+                    </ul>
+                    <div class="m-3 mt-auto">
+                        <a class="btn btn-outline-dark text-center w-100 border-3 py-3 fw-bold" href="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)">DOWNLOAD FILE</a>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex flex-column">
+                    @{
+                        if (isImage)
+                        {
+                            <div class="m-auto">
+                                <div class="m-3">
+                                    <img class="mw-100" src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)">
+                                </div>
+                            </div>
+                        }
+                        else if (isAudio)
+                        {
+                            <div class="m-auto">
+                                <div class="m-3">
+                                    <audio class="mw-100" src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)" controls>
+                                        Your browser doesn't support HTML5 audio.
+                                    </audio>
+                                </div>
+                            </div>
+                        }
+                        else if (isVideo)
+                        {
+                            <div class="m-auto">
+                                <div class="m-3">
+                                    <video class="mw-100" controls>
+                                        <source src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)" type="video/mp4" />
+                                        Your browser doesn't support HTML5 video.
+                                    </video>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="m-auto">
+                                <p>Looks like this file cannot be previewed.</p>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
