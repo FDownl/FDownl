@@ -62,8 +62,6 @@ namespace Fdownl_Storage
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseCors(x => x.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader());
