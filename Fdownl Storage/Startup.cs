@@ -56,11 +56,6 @@ namespace Fdownl_Storage
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
 
             app.UseRouting();
 
