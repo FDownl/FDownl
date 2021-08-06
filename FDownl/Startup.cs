@@ -42,6 +42,10 @@ namespace FDownl
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
 
             app.UseStaticFiles();
 
