@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Net;
 
 namespace FDownl
 {
@@ -20,6 +21,7 @@ namespace FDownl
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseKestrel(x => x.Listen(IPAddress.Loopback, 5000));
                     webBuilder.UseStartup<Startup>();
                 });
     }
