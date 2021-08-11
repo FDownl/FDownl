@@ -22,11 +22,11 @@ namespace FDownl.Controllers
             _databaseContext = databaseContext;
         }
 
-        public async Task<IActionResult> ByCodeAsync()
+        public async Task<IActionResult> ByCodeAsync(string code)
         {
             var coupon = await _databaseContext.CouponCodes
                 .Select(x => new ApiCoupon { Id = x.Id, Code = x.Code, LifetimeAdd = x.LifetimeAdd, LifetimeSet = x.LifetimeSet } )
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(x => x.Code == code);
             return Json(coupon);
         }
 
