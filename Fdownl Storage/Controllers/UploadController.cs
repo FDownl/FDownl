@@ -120,8 +120,14 @@ namespace Fdownl_Storage.Controllers
 
             string filename = randomId + "-" + originalFilename;
             var uploadedAt = DateTime.UtcNow;
-            string coupon = uploadForm.Code;
+            string couponCode = uploadForm.Code;
             int lifetime = uploadForm.Lifetime;
+            if (!string.IsNullOrEmpty(couponCode))
+            {
+                var coupon = await _databaseContext.CouponCodes.FirstOrDefaultAsync(x => x.Code == couponCode);
+                if (coupon.LifetimeSet != 0) lifetime = coupon.LifetimeSet;
+                if (coupon.LifetimeAdd != 0) lifetime += coupon.LifetimeAdd;
+            }
 
             long fileSize = uploadForm.Files.Sum(x => x.Length);
 
@@ -165,7 +171,7 @@ namespace Fdownl_Storage.Controllers
                 Lifetime = lifetime,
                 Ip = ip,
                 Size = fileSize,
-                Coupon = coupon
+                Coupon = couponCode
             };
             _databaseContext.UploadedFiles.Add(uploadedFile);
             await _databaseContext.SaveChangesAsync();
