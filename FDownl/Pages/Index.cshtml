@@ -36,6 +36,11 @@
                     </select>
                 </div>
                 <div class="my-2">
+                    <input type="checkbox" id="isEncrypted" name="isEncrypted" onclick="togglePassword()">
+                    <label for="isEncrypted">Password Encrypted</label>
+                    <input class="form-control" style="display: none;" type="text" name="password" id="password" placeholder="Please enter your password" />
+                </div>
+                <div class="my-2">
                     <label for="code">Coupon Code</label>
                     <input class="form-control" type="text" name="code" id="coupon_code" placeholder="Please enter your coupon code" />
                 </div>

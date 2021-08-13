@@ -1,8 +1,11 @@
+/* Global variables */
 var selDiv = "";
 var filesSize = 0;
 var formPost = document.getElementById("form_post");
 var formData = new FormData(formPost);
 
+
+/* Drop file selection handling */
 document.addEventListener("DOMContentLoaded", init, false);
 
 function init() {
@@ -121,16 +124,20 @@ function removeElement(i) {
     }
 }
 
+
+/* URL GET parsing */
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const code = urlParams.get('code');
 document.getElementById("coupon_code").value = code;
 
+
+/* POST handling */
 var selector = document.getElementById("serverlocation");
 var upload = document.getElementById("upload_btn");
 
+// Retrieve server locations
 selector.innerHTML = "<option value=\"\">Loading...</option>";
-
 var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function () {
 	if (this.readyState == 4 && this.status == 200) {
@@ -145,6 +152,18 @@ xhttp.onreadystatechange = function () {
 xhttp.open("GET", "/api/storageservers/get", true);
 xhttp.send();
 
+// Password field handling
+function togglePassword() {
+	var isEnc = document.getElementById("isEncrypted");
+	var passfield = document.getElementById("password");
+	if (isEnc.checked) {
+		passfield.style.display = "";
+	} else {
+		passfield.style.display = "None";
+	}
+}
+
+// Upload handling
 $("#upload_btn").click(function (e) {
 	e.preventDefault();
 
@@ -152,6 +171,11 @@ $("#upload_btn").click(function (e) {
 	$("#progress-wrp").fadeIn(1000);
 	formData.set("lifetime", document.getElementById("lifetime").value);
 	formData.set("code", document.getElementById("coupon_code").value);
+	if (document.getElementById("isEncrypted").checked) {
+		formData.set("password", document.getElementById("password").value);
+	} else {
+		formData.set("password", "");
+	}
 
 	$.ajax({
 		type: "POST",
