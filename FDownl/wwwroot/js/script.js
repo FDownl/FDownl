@@ -200,6 +200,6 @@ $("#upload_btn").click(function (e) {
 		cache: false,
 		contentType: false,
 		processData: false,
-		timeout: 60000
+		timeout: 120000
 	});
 }); 
