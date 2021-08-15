@@ -106,7 +106,7 @@ namespace Fdownl_Storage.Controllers
 
         private async Task<string> UploadAsync(UploadForm uploadForm)
         {
-            string ip = HttpContext.Connection.RemoteIpAddress?.ToString();
+            string ip = HttpContext.Request.Headers["X-Forwarded-For"];
 
             string randomId = RandomHelper.GenerateRandomString(5);
             string serverName = Environment.MachineName;
