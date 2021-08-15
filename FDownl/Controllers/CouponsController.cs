@@ -21,7 +21,8 @@ namespace FDownl.Controllers
             _logger = logger;
             _databaseContext = databaseContext;
         }
-
+        
+        [HttpGet("{code}")]
         public async Task<IActionResult> ByCodeAsync(string code)
         {
             var coupon = await _databaseContext.CouponCodes
