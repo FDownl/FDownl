@@ -45,6 +45,7 @@ namespace Fdownl_Storage.Controllers
             [Range(60, 604800)]
             public int Lifetime { get; set; }
             public string Code { get; set; }
+            public string Password { get; set; }
         }
 
         public class UploadResult
@@ -122,6 +123,8 @@ namespace Fdownl_Storage.Controllers
             var uploadedAt = DateTime.UtcNow;
             string coupon = uploadForm.Code;
             int lifetime = uploadForm.Lifetime;
+            string password = uploadForm.Password;
+            bool isEncrypted = !String.IsNullOrEmpty(password);
 
             long fileSize = uploadForm.Files.Sum(x => x.Length);
 
@@ -133,7 +136,7 @@ namespace Fdownl_Storage.Controllers
             CreateDirectoryIfNotExists(tempUploadPath);
             string fullSavePath = Path.Combine(mainUploadPath, filename);
 
-            if (uploadForm.Files.Count == 1)
+            if (uploadForm.Files.Count == 1 && !isEncrypted)
             {
                 using var stream = new FileStream(fullSavePath, FileMode.Create);
                 await uploadForm.Files.First().CopyToAsync(stream);
@@ -149,9 +152,13 @@ namespace Fdownl_Storage.Controllers
                     using var stream = new FileStream(savePath, FileMode.Create);
                     await file.CopyToAsync(stream);
                 }
-                using var zip = new ZipFile();
-                zip.AddDirectory(tempFolder);
-                zip.Save(fullSavePath);
+                using (ZipFile zip = new ZipFile()) {
+                    // Encryption method set as AES-256
+                    zip.Encryption = EncryptionAlgorithm.WinZipAes256;
+                    zip.Password = password;
+                    zip.AddDirectory(tempFolder);
+                    zip.Save(fullSavePath);
+                }
                 Directory.Delete(tempFolder, true);
             }
 
@@ -165,6 +172,7 @@ namespace Fdownl_Storage.Controllers
                 Lifetime = lifetime,
                 Ip = ip,
                 Size = fileSize,
+                IsEncrypted = isEncrypted,
                 Coupon = coupon
             };
             _databaseContext.UploadedFiles.Add(uploadedFile);
