@@ -4,6 +4,10 @@
     ViewData["Title"] = "FDownl";
 }
 
+@section Scripts {
+    <script src="~/js/script.js"></script>
+}
+
 <div style="margin-bottom: 80px">
     <div class="container py-3">
         <form class="row" enctype="multipart/form-data" method="post" id="form_post">
@@ -38,6 +42,11 @@
                 <div class="my-2">
                     <label for="code">Coupon Code</label>
                     <input class="form-control" type="text" name="code" id="coupon_code" placeholder="Please enter your coupon code" />
+                </div>
+                <div class="my-2">
+                    <input type="checkbox" id="isEncrypted" onclick="togglePassword()">
+                    <label for="isEncrypted">Password Encrypted</label>
+                    <input class="form-control" style="display: none;" type="text" name="password" id="password" placeholder="Please enter your password" />
                 </div>
                 <input type="submit" class="btn btn-primary w-100 mt-2" id="upload_btn" value="Upload" disabled />
             </div>
