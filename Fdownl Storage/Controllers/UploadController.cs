@@ -112,9 +112,11 @@ namespace Fdownl_Storage.Controllers
             string randomId = RandomHelper.GenerateRandomString(5);
             string serverName = Environment.MachineName;
             string hostname = HttpContext.Request.Host.Value;
+            string password = uploadForm.Password;
+            bool isEncrypted = !String.IsNullOrEmpty(password);
 
             string originalFilename;
-            if (uploadForm.Files.Count == 1)
+            if (uploadForm.Files.Count == 1 && !isEncrypted)
                 originalFilename = SanitizeFileName(uploadForm.Files.First().FileName);
             else
                 originalFilename = "yourfiles.zip";
@@ -123,8 +125,6 @@ namespace Fdownl_Storage.Controllers
             var uploadedAt = DateTime.UtcNow;
             string coupon = uploadForm.Code;
             int lifetime = uploadForm.Lifetime;
-            string password = uploadForm.Password;
-            bool isEncrypted = !String.IsNullOrEmpty(password);
 
             long fileSize = uploadForm.Files.Sum(x => x.Length);
 
