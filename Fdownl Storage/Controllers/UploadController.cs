@@ -113,13 +113,16 @@ namespace Fdownl_Storage.Controllers
             string serverName = Environment.MachineName;
             string hostname = HttpContext.Request.Host.Value;
             string password = uploadForm.Password;
-            bool isEncrypted = !String.IsNullOrEmpty(password);
+            bool isEncrypted = !string.IsNullOrEmpty(password);
 
             string originalFilename;
-            if (uploadForm.Files.Count == 1 && !isEncrypted)
+            if (uploadForm.Files.Count == 1)
+            {
                 originalFilename = SanitizeFileName(uploadForm.Files.First().FileName);
+                if (isEncrypted) originalFilename += ".zip";
+            }
             else
-                originalFilename = "yourfiles.zip";
+                originalFilename = "files.zip";
 
             string filename = randomId + "-" + originalFilename;
             var uploadedAt = DateTime.UtcNow;
@@ -158,10 +161,13 @@ namespace Fdownl_Storage.Controllers
                     using var stream = new FileStream(savePath, FileMode.Create);
                     await file.CopyToAsync(stream);
                 }
-                using (ZipFile zip = new ZipFile()) {
-                    // Encryption method set as AES-256
-                    zip.Encryption = EncryptionAlgorithm.WinZipAes256;
-                    zip.Password = password;
+                using (ZipFile zip = new ()) {
+                    if (isEncrypted)
+                    {
+                        // Encryption method set as AES-256
+                        zip.Encryption = EncryptionAlgorithm.WinZipAes256;
+                        zip.Password = password;
+                    }
                     zip.AddDirectory(tempFolder);
                     zip.Save(fullSavePath);
                 }
