@@ -151,11 +151,12 @@ namespace Fdownl_Storage.Controllers
                     using var stream = new FileStream(savePath, FileMode.Create);
                     await file.CopyToAsync(stream);
                 }
-                using ZipFile zip = new ZipFile();
-                zip.Encryption = EncryptionAlgorithm.WinZipAes256;
-                zip.Password = password;
-                zip.AddDirectory(tempFolder);
-                zip.Save(fullSavePath);
+                using (ZipFile zip = new ZipFile()) {
+                    zip.Encryption = EncryptionAlgorithm.WinZipAes256;
+                    zip.Password = password;
+                    zip.AddDirectory(tempFolder);
+                    zip.Save(fullSavePath);
+                }
                 Directory.Delete(tempFolder, true);
             }
 
