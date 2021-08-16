@@ -107,7 +107,7 @@ namespace Fdownl_Storage.Controllers
 
         private async Task<string> UploadAsync(UploadForm uploadForm)
         {
-            string ip = HttpContext.Request.Headers["X-Forwarded-For"];
+            string ip = HttpContext.Connection.RemoteIpAddress?.ToString();
 
             string randomId = RandomHelper.GenerateRandomString(5);
             string serverName = Environment.MachineName;
@@ -123,8 +123,14 @@ namespace Fdownl_Storage.Controllers
 
             string filename = randomId + "-" + originalFilename;
             var uploadedAt = DateTime.UtcNow;
-            string coupon = uploadForm.Code;
+            string couponCode = uploadForm.Code;
             int lifetime = uploadForm.Lifetime;
+            if (!string.IsNullOrEmpty(couponCode))
+            {
+                var coupon = await _databaseContext.CouponCodes.FirstOrDefaultAsync(x => x.Code == couponCode);
+                if (coupon.LifetimeSet != 0) lifetime = coupon.LifetimeSet;
+                if (coupon.LifetimeAdd != 0) lifetime += coupon.LifetimeAdd;
+            }
 
             long fileSize = uploadForm.Files.Sum(x => x.Length);
 
@@ -173,7 +179,7 @@ namespace Fdownl_Storage.Controllers
                 Ip = ip,
                 Size = fileSize,
                 IsEncrypted = isEncrypted,
-                Coupon = coupon
+                Coupon = couponCode
             };
             _databaseContext.UploadedFiles.Add(uploadedFile);
             await _databaseContext.SaveChangesAsync();

@@ -11,6 +11,7 @@ namespace FDownl_Shared_Resources
     {
         public DbSet<StorageServer> StorageServers { get; set; }
         public DbSet<UploadedFile> UploadedFiles { get; set; }
+        public DbSet<CouponCode> CouponCodes { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options) { }
