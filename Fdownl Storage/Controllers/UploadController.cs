@@ -131,8 +131,12 @@ namespace Fdownl_Storage.Controllers
             if (!string.IsNullOrEmpty(couponCode))
             {
                 var coupon = await _databaseContext.CouponCodes.FirstOrDefaultAsync(x => x.Code == couponCode);
-                if (coupon.LifetimeSet != 0) lifetime = coupon.LifetimeSet;
-                if (coupon.LifetimeAdd != 0) lifetime += coupon.LifetimeAdd;
+                if (coupon != null)
+                {
+                    if (coupon.LifetimeSet != 0) lifetime = coupon.LifetimeSet;
+                    if (coupon.LifetimeAdd != 0) lifetime += coupon.LifetimeAdd;
+                }
+                else couponCode = null;
             }
 
             long fileSize = uploadForm.Files.Sum(x => x.Length);
