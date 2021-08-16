@@ -45,6 +45,7 @@ namespace Fdownl_Storage.Controllers
             [Range(60, 604800)]
             public int Lifetime { get; set; }
             public string Code { get; set; }
+            public string Password { get; set; }
         }
 
         public class UploadResult
@@ -122,6 +123,7 @@ namespace Fdownl_Storage.Controllers
             var uploadedAt = DateTime.UtcNow;
             string coupon = uploadForm.Code;
             int lifetime = uploadForm.Lifetime;
+            string password = uploadForm.Password;
 
             long fileSize = uploadForm.Files.Sum(x => x.Length);
 
@@ -149,7 +151,9 @@ namespace Fdownl_Storage.Controllers
                     using var stream = new FileStream(savePath, FileMode.Create);
                     await file.CopyToAsync(stream);
                 }
-                using var zip = new ZipFile();
+                using ZipFile zip = new ZipFile();
+                zip.Encryption = EncryptionAlgorithm.WinZipAes256;
+                zip.Password = password;
                 zip.AddDirectory(tempFolder);
                 zip.Save(fullSavePath);
                 Directory.Delete(tempFolder, true);
