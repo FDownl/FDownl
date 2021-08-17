@@ -57,16 +57,16 @@
         }
         else
         {
-            <div class="row m-3">
+            <div class="row my-3">
                 <h4 class="text-center">@file.Filename</h4>
                 <hr />
                 <div class="col-md-6 text-start d-flex flex-column">
-                    <ul class="list-group m-3">
+                    <ul class="list-group my-3">
                         <li class="list-group-item"><b>Size: </b>@size</li>
                         <li class="list-group-item"><b>Lifetime: </b>@timeToDeletion</li>
                         <li class="list-group-item"><b>Password: </b>@isEncrypted</li>
                     </ul>
-                    <div class="m-3 mt-auto">
+                    <div class="my-3 mt-auto">
                         <a class="btn btn-outline-dark text-center w-100 border-3 py-3 fw-bold" href="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)">DOWNLOAD FILE</a>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                         if (isImage)
                         {
                             <div class="m-auto">
-                                <div class="m-3">
+                                <div class="my-3">
                                     <img class="mw-100" src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)">
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
                         else if (isAudio)
                         {
                             <div class="m-auto">
-                                <div class="m-3">
+                                <div class="my-3">
                                     <audio class="mw-100" src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)" controls>
                                         Your browser doesn't support HTML5 audio.
                                     </audio>
@@ -93,7 +93,7 @@
                         else if (isVideo)
                         {
                             <div class="m-auto">
-                                <div class="m-3">
+                                <div class="my-3">
                                     <video class="mw-100" controls>
                                         <source src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)" type="video/mp4" />
                                         Your browser doesn't support HTML5 video.
