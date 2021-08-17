@@ -21,7 +21,7 @@
     bool isVideo = false;
     string timeToDeletion = "";
     string size = "";
-    string isEncrypted = (bool)file.IsEncrypted ? "Yes" : "No";
+    string isEncrypted = "";
 
     if (file != null)
     {
@@ -37,6 +37,15 @@
         if ((s = file.Size / (1024 * 1024)) != 0) size = s + "MB";
         else if ((s = file.Size / 1024) != 0) size = s + "KB";
         else size = file.Size + "B";
+        isEncrypted = file.IsEncrypted ? "Yes" : "No";
+    }
+}
+
+@section Og {
+    @if (file != null)
+    {
+        <meta property="og:title" content="@file.Filename" />
+        <meta property="og:description" content="@($"Check out \"{file.Filename}\" at FDownl")" />
     }
 }
 
