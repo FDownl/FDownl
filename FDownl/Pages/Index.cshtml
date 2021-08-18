@@ -6,55 +6,72 @@
 
 @section Scripts {
     <script src="~/js/script.js"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 }
 
-<div style="margin-bottom: 80px">
-    <div class="container py-3">
-        <form class="row" enctype="multipart/form-data" method="post" id="form_post">
-            <div class="col-md-6 text-center p-3">
-                <h4 class="mb-3">File Selection</h4>
-                <div id="drop-area">
-                    <label for="files" class="form-label">Drop/Select files</label>
-                    <input class="form-control" type="file" id="files" multiple required>
-                </div>
-                <div id="page-mask"></div>
+@section Tip {
+    @{
+        var tips = new string[]
+        {
+            "You can append ?code=COUPON to the URL to auto fill the form's coupon field",
+            "Encrypting your files will zip them with the password you chose"
+        };
+    }
+    @if (tips.Any())
+    {
+        <span class="text-muted float-end d-none d-lg-block">Tip: @(tips[(new Random()).Next(tips.Count())])</span>
+    }
+}
+
+<div class="container py-3" style="margin-bottom: 80px">
+    <form class="row" enctype="multipart/form-data" method="post" id="form_post">
+        <div class="col-md-6 text-center p-3">
+            <h4 class="mb-3">File Selection</h4>
+            <div id="drop-area">
+                <label for="files" class="form-label">Drop/Select files</label>
+                <input class="form-control" type="file" id="files" multiple required>
             </div>
-            <div class="col-md-6 text-center p-3">
-                <h4 class="mb-3">Options</h4>
-                <div class="my-2">
-                    <label for="lifetime">Lifetime</label>
-                    <select class="form-select" id="lifetime" name="lifetime" required>
-                        <option value="604800">7 days</option>
-                        <option value="518400">6 days</option>
-                        <option value="432000">5 days</option>
-                        <option value="345600">4 days</option>
-                        <option value="259200">3 days</option>
-                        <option value="172800">2 days</option>
-                        <option value="86400">1 day</option>
-                    </select>
-                </div>
-                <div class="my-2">
-                    <label for="serverlocation">Server Location</label>
-                    <select class="form-select" id="serverlocation" required>
-                        <option value="">Loading...</option>
-                    </select>
-                </div>
-                <div class="my-2">
-                    <label for="code">Coupon Code</label>
-                    <input class="form-control" type="text" name="code" id="coupon_code" placeholder="Please enter your coupon code" />
-                </div>
-                <div class="my-2">
-                    <input type="checkbox" id="isEncrypted" onclick="togglePassword()">
-                    <label for="isEncrypted">Password Encrypted</label>
-                    <input class="form-control" style="display: none;" type="text" name="password" id="password" placeholder="Please enter your password" />
-                </div>
-                <input type="submit" class="btn btn-primary w-100 mt-2" id="upload_btn" value="Upload" disabled />
-            </div>
-        </form>
-        <div id="progress-wrp">
-            <div class="progress-bar"></div>
-            <div class="status">0%</div>
+            <div id="page-mask"></div>
         </div>
+        <div class="col-md-6 text-center p-3">
+            <h4 class="mb-3">Options</h4>
+            <div class="my-2">
+                <label for="lifetime">Lifetime</label>
+                <select class="form-select" id="lifetime" name="lifetime" required>
+                    <option value="604800">7 days</option>
+                    <option value="518400">6 days</option>
+                    <option value="432000">5 days</option>
+                    <option value="345600">4 days</option>
+                    <option value="259200">3 days</option>
+                    <option value="172800">2 days</option>
+                    <option value="86400">1 day</option>
+                </select>
+            </div>
+            <div class="my-2">
+                <label for="serverlocation">Server Location</label>
+                <select class="form-select" id="serverlocation" required>
+                    <option value="">Loading...</option>
+                </select>
+            </div>
+            <div class="my-2">
+                <label for="code">Coupon Code <span data-toggle="tooltip" title="Append ?code=COUPON to the URL to auto fill this field"><i class="fa fa-question-circle"></i></span></label>
+                <input class="form-control" type="text" name="code" id="coupon_code" placeholder="Please enter your coupon code" />
+            </div>
+            <div class="my-2">
+                <input type="checkbox" id="isEncrypted" onclick="togglePassword()">
+                <label for="isEncrypted">Password Encrypted</label>
+                <input class="form-control" style="display: none;" type="text" name="password" id="password" placeholder="Please enter your password" />
+            </div>
+            <input type="submit" class="btn btn-primary w-100 mt-2" id="upload_btn" value="Upload" disabled />
+        </div>
+    </form>
+    <div id="progress-wrp">
+        <div class="progress-bar"></div>
+        <div class="status">0%</div>
     </div>
     <div class="container mb-3 p-3 bg-light border rounded" id="file-selection">
         <h4 class="mb-2">Selected files</h4>

@@ -22,8 +22,7 @@
         <div class="collapse navbar-collapse justify-content-end px-4" id="navbarNavAltMarkup">
             <div class="navbar-nav text-center">
                 <a class="nav-item btn btn-outline-primary fw-bold me-2" style="border-radius: 30px; border-width: 2px;" href="/">Upload</a>
-                <a class="nav-item nav-link fw-bold" href="/faq">FAQ</a>
-                <a class="nav-item nav-link fw-bold" href="/sponsors">Sponsors</a>
+                <a class="nav-item nav-link fw-bold" href="/about">About</a>
             </div>
         </div>
     </nav>
@@ -31,6 +30,7 @@
     <footer class="footer">
         <div class="container">
             <span class="text-muted">Created by et3rnos & mcdulltii</span>
+            @RenderSection("Tip", required: false)
         </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
