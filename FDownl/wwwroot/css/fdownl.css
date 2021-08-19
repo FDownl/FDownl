@@ -1,3 +1,7 @@
+ul {
+    list-style-type: square;
+}
+
 a {
     color: inherit;
     text-decoration: none;

@@ -1,5 +1,7 @@
 ﻿@page "/{id}"
 @model ShareModel
+@using FDownl_Shared_Resources.Models;
+@using Newtonsoft.Json;
 
 @{
     var file = Model.UploadedFile;
@@ -38,6 +40,26 @@
         else if ((s = file.Size / 1024) != 0) size = s + "KB";
         else size = file.Size + "B";
         isEncrypted = file.IsEncrypted ? "Yes" : "No";
+    }
+
+    int j = 0;
+}
+
+@{
+    void ShowFolderContents(Folder folder)
+    {
+        <ul class="collapse" id="folder@(j)">
+            @foreach (var f in folder.Folders)
+            {
+                j += 1;
+            <li data-bs-toggle="collapse" href="#folder@(j)" role="button" aria-expanded="false"><b>@f.Name <i class="fas fa-chevron-down"></i></b></li>
+                ShowFolderContents(f);
+            }
+            @foreach (var f in folder.Files)
+            {
+                <li>@f</li>
+            }
+        </ul>
     }
 }
 
@@ -100,6 +122,13 @@
                                     </video>
                                 </div>
                             </div>
+                        }
+                        else if (!string.IsNullOrEmpty(file.ZipContents))
+                        {
+                <div class="text-start">
+                    <b data-bs-toggle="collapse" href="#folder0" role="button" aria-expanded="false">Zip Contents <i class="fas fa-chevron-down"></i></b>
+                    @{ShowFolderContents(JsonConvert.DeserializeObject<Folder>(file.ZipContents));}
+                </div>
                         }
                         else
                         {
