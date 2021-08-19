@@ -21,6 +21,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace Fdownl_Storage.Controllers
 {
@@ -58,7 +59,7 @@ namespace Fdownl_Storage.Controllers
         [HttpPost]
         [Route("/upload")]
         [EnableCors]
-        [RequestSizeLimit(190 * 1024 * 1024)] // 100MB
+        [RequestSizeLimit(100 * 1024 * 1024)] // 100MB
         public async Task<IActionResult> Index(UploadForm uploadForm)
         {
             if (!ModelState.IsValid)
@@ -178,6 +179,48 @@ namespace Fdownl_Storage.Controllers
                 Directory.Delete(tempFolder, true);
             }
 
+            string zipContents = "";
+            if (Path.GetExtension(fullSavePath) == ".zip")
+            {
+                try
+                {
+                    using var zip = ZipFile.Read(fullSavePath);
+                    var entries = zip.EntryFileNames.ToList();
+                    var rootFolder = new Folder();
+
+                    //Create folders
+                    foreach (var entry in entries.Where(x => x.EndsWith("/")))
+                    {
+                        var path = entry.Split("/", StringSplitOptions.RemoveEmptyEntries);
+                        var currentFolder = rootFolder;
+                        foreach (var folder in path)
+                        {
+                            var f = currentFolder.Folders.FirstOrDefault(x => x.Name == folder);
+                            if (f == null)
+                            {
+                                f = new Folder { Name = folder };
+                                currentFolder.Folders.Add(f);
+                            }
+                            currentFolder = f;
+                        }
+                    }
+
+                    //Create files
+                    foreach (var entry in entries.Where(x => !x.EndsWith("/")))
+                    {
+                        var path = entry.Split("/", StringSplitOptions.RemoveEmptyEntries);
+                        var currentFolder = rootFolder;
+                        foreach (var folder in path.Take(path.Length - 1))
+                        {
+                            currentFolder = currentFolder.Folders.First(x => x.Name == folder);
+                        }
+                        currentFolder.Files.Add(path.Last());
+                    }
+                    zipContents = JsonConvert.SerializeObject(rootFolder);
+                }
+                catch { _logger.LogError("An error occured while reading an uploaded zip file."); }
+            }
+
             var uploadedFile = new UploadedFile
             {
                 RandomId = randomId,
@@ -189,9 +232,10 @@ namespace Fdownl_Storage.Controllers
                 Ip = ip,
                 Size = fileSize,
                 IsEncrypted = isEncrypted,
+                ZipContents = zipContents,
                 Coupon = couponCode
             };
-            _databaseContext.UploadedFiles.Add(uploadedFile);
+            await _databaseContext.UploadedFiles.AddAsync(uploadedFile);
             await _databaseContext.SaveChangesAsync();
 
             return randomId;

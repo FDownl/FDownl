@@ -19,6 +19,7 @@ namespace FDownl_Shared_Resources.Models
         public long Size { get; set; }
         public string Coupon { get; set; }
         public bool IsEncrypted { get; set; }
+        public string ZipContents { get; set; }
         [Timestamp]
         public byte[] RowVersion { get; set; }
     }
