@@ -1,5 +1,7 @@
 ul {
-    list-style-type: square;
+	list-style-type: square;
+    /*list-style-type: "\251c\2500\20";*/
+	/*2514*/
 }
 
 a {
