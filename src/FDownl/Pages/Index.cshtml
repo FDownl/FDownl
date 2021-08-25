@@ -13,20 +13,6 @@
     </script>
 }
 
-@section Tip {
-    @{
-        var tips = new string[]
-        {
-            "You can append ?code=COUPON to the URL to auto fill the form's coupon field",
-            "Encrypting your files will zip them with the password you chose"
-        };
-    }
-    @if (tips.Any())
-    {
-        <span class="text-muted float-end d-none d-lg-block">Tip: @(tips[(new Random()).Next(tips.Count())])</span>
-    }
-}
-
 <div class="container py-3" style="margin-bottom: 80px">
     <form class="row" enctype="multipart/form-data" method="post" id="form_post">
         <div class="col-md-6 text-center p-3">
@@ -63,7 +49,7 @@
             </div>
             <div class="my-2">
                 <input type="checkbox" id="isEncrypted" onclick="togglePassword()">
-                <label for="isEncrypted">Password Encrypted</label>
+                <label for="isEncrypted">Password Encrypted <span data-toggle="tooltip" title="This will zip your files with the password you chose"><i class="fa fa-question-circle"></i></span></label>
                 <input class="form-control" style="display: none;" type="text" name="password" id="password" placeholder="Please enter your password" />
             </div>
             <input type="submit" class="btn btn-primary w-100 mt-2" id="upload_btn" value="Upload" disabled />

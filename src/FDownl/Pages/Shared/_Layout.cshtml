@@ -30,7 +30,17 @@
     <footer class="footer">
         <div class="container">
             <span class="text-muted">Created by et3rnos & mcdulltii</span>
-            @RenderSection("Tip", required: false)
+            @{
+				var tips = new string[]
+				{
+					"You can append ?code=COUPON to the URL to auto fill the form's coupon field",
+					"Encrypting your files will zip them with the password you chose"
+				};
+			}
+			@if (tips.Any())
+			{
+				<span class="text-muted float-end d-none d-lg-block">Tip: @(tips[(new Random()).Next(tips.Count())])</span>
+			}
         </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
