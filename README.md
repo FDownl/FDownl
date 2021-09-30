@@ -23,7 +23,7 @@ Please visit [https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu]
 #### Clone ImaginaryCTF
 
 ```
-git clone https://github.com/Et3rnos/ImaginaryCTF
+git clone https://github.com/fdownl/fdownl
 ```
 
 #### Customize it
