@@ -32,14 +32,14 @@ example usage:
         files = [('files', open(p, 'rb')) for p in paths]
         print("[DEBUG] Uploading file(s) with 7 days of lifetime")
         id = upload(files, args.lifetime, args.code)
-        print(f"[SUCCESS] You can access your files at https://fdownl.ga/{id}")
+        print(f"[SUCCESS] You can access your files at https://fdow.nl/{id}")
     elif args.url:
         print(f"[DEBUG] Downloading {link}")
         download(args.url, args.destination)
         print(f"[SUCCESS] {fname} saved.")
 
 def upload(files, lifetime = 604800, code = ""):
-    return requests.post("https://s1.fdownl.ga/upload/", data = {"lifetime": lifetime, "code": code}, files = files).json()["id"]
+    return requests.post("https://s1.fdow.nl/upload/", data = {"lifetime": lifetime, "code": code}, files = files).json()["id"]
 
 def download(url, destination):
     resp = requests.get(url)
