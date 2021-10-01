@@ -20,7 +20,7 @@ To Be Updated
 
 Please visit [https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu](https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu) for instructions on how to install .NET Core SDK 5.0 in your Ubuntu distribution.
 
-#### Clone ImaginaryCTF
+#### Clone FDownl
 
 ```
 git clone https://github.com/fdownl/fdownl
@@ -54,4 +54,4 @@ The easier way to contact us is by joining [FDownl Discord server](https://disco
 
 ## Support Us
 
-We are glad to know you want to support us! Unfortunatelly, there is still no way to do that :(
+We are glad to know you want to support us! Unfortunately, there is still no way to do that :(
