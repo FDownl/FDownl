@@ -6,31 +6,18 @@
 @{
     var file = Model.UploadedFile;
 
-    DateTime now = default;
-    DateTime deletedAt = default;
-    if (file != null)
-    {
-        now = DateTime.UtcNow;
-        deletedAt = file.UploadedAt.AddSeconds(file.Lifetime);
-        if (deletedAt < now)
-            file = null;
-    }
+    DateTime now = DateTime.UtcNow;
+    DateTime deletedAt = file.UploadedAt.AddSeconds(file.Lifetime);
 
-    ViewData["Title"] = (file == null ? "Not Found" : file.Filename) + " | FDownl";
+    ViewData["Title"] = file.Filename + " | FDownl";
 
-    bool isImage = false;
-    bool isAudio = false;
-    bool isVideo = false;
     string timeToDeletion = "";
     string size = "";
-    string isEncrypted = "";
 
-    if (file != null)
-    {
         string extension = System.IO.Path.GetExtension(file.Filename);
-        isImage = new string[] { ".jpeg", ".jpg", ".png", ".gif" }.Contains(extension);
-        isAudio = new string[] { ".mp3", ".wav" }.Contains(extension);
-        isVideo = new string[] { ".mp4" }.Contains(extension);
+        bool isImage = new string[] { ".jpeg", ".jpg", ".png", ".gif" }.Contains(extension);
+        bool isAudio = new string[] { ".mp3", ".wav" }.Contains(extension);
+        bool isVideo = new string[] { ".mp4" }.Contains(extension);
         var time = (deletedAt - now).Add(TimeSpan.FromMinutes(1));
         if (time.Days != 0) timeToDeletion += time.Days + "d ";
         if (time.Hours != 0) timeToDeletion += time.Hours + "h ";
@@ -39,8 +26,7 @@
         if ((s = file.Size / (1024 * 1024)) != 0) size = s + "MB";
         else if ((s = file.Size / 1024) != 0) size = s + "KB";
         else size = file.Size + "B";
-        isEncrypted = file.IsEncrypted ? "Yes" : "No";
-    }
+        string isEncrypted = file.IsEncrypted ? "Yes" : "No";
 
     int j = 0;
 }
@@ -73,12 +59,6 @@
 
 <div class="container py-3">
     <div class="text-center">
-        @if (file == null)
-        {
-            <h4 class="m-3">That file does not exist in our servers.</h4>
-        }
-        else
-        {
             <div class="row my-3">
                 <h4 class="text-center">@file.Filename</h4>
                 <hr />
@@ -139,6 +119,5 @@
                     }
                 </div>
             </div>
-        }
     </div>
 </div>

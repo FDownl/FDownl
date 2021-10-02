@@ -23,8 +23,15 @@ namespace FDownl.Pages
             _context = context;
         }
 
-        public async Task OnGetAsync(string id) {
-            UploadedFile = await _context.UploadedFiles.Where(x => x.RandomId == id).FirstOrDefaultAsync();
+        public async Task<IActionResult> OnGetAsync(string id) {
+            UploadedFile = await _context.UploadedFiles.FirstOrDefaultAsync(x => x.RandomId == id);
+            if (UploadedFile != null && UploadedFile.UploadedAt.AddSeconds(UploadedFile.Lifetime) < DateTime.UtcNow)
+                UploadedFile = null;
+
+            if (UploadedFile == null)
+                return NotFound();
+            else
+                return Page();
         }
     }
 }
