@@ -18,5 +18,8 @@ jobs:
         dotnet-version: 5.0.x
     - name: Publish
       run: dotnet publish -c release
-   #- name: Launch
-   #  run: dotnet bin/release/net5.0/FDownl.dll
+    - name: Backup Old Website
+      run: rm -rf ~/old
+      run: mv ~/app ~/old
+    - name: Move Website
+      run: mv bin/release/net5.0/publish ~/app
