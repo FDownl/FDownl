@@ -19,7 +19,8 @@ jobs:
     - name: Publish
       run: dotnet publish -c release
     - name: Backup Old Website
-      run: rm -rf ~/old
-      run: mv ~/app ~/old
+      run: |
+        rm -rf ~/old
+        mv ~/app ~/old
     - name: Move Website
       run: mv bin/release/net5.0/publish ~/app
