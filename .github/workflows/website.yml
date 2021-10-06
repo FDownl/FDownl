@@ -21,6 +21,6 @@ jobs:
     - name: Backup Old Website
       run: |
         rm -rf ~/old
-        mv ~/app ~/old
+        [ -f ~/app ] && mv ~/app ~/old
     - name: Move Website
       run: mv bin/release/net5.0/publish ~/app
