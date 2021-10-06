@@ -2,14 +2,12 @@ name: .NET
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches: [ gh_actions ]
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: website-server
 
     steps:
     - uses: actions/checkout@v2
