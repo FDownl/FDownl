@@ -1,4 +1,4 @@
-name: .NET
+name: Website Deploy
 
 on:
   push:
