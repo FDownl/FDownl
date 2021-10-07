@@ -2,7 +2,7 @@ name: Website Deploy
 
 on:
   push:
-    branches: [ gh_actions ]
+    branches: [ master ]
 
 jobs:
   deploy:
@@ -25,4 +25,8 @@ jobs:
           mv ~/app ~/old
         fi
     - name: Move Website
-      run: mv bin/release/net5.0/publish ~/app
+      run: |
+        mv bin/release/net5.0/publish ~/app
+        mv ~/appsettings.json ~/app
+    - name: Restart Website
+      run: sudo systemctl restart fdownl
