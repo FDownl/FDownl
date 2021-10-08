@@ -9,7 +9,7 @@ jobs:
     runs-on: storage-server
     defaults:
       run:
-        working-directory: ./src/Fdownl\ Storage
+        working-directory: "./src/Fdownl Storage"
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
