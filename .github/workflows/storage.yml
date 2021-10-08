@@ -27,6 +27,6 @@ jobs:
     - name: Move Website
       run: |
         mv bin/release/net5.0/publish ~/app
-        mv ~/appsettings.json ~/app
+        cp ~/appsettings.json ~/app
     - name: Restart Website
       run: sudo systemctl restart fdownlstorage
