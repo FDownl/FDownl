@@ -1,0 +1,32 @@
+name: Storage Deploy
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: storage-server
+    defaults:
+      run:
+        working-directory: "./src/Fdownl Storage"
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Publish
+      run: dotnet publish -c release
+    - name: Backup Old Website
+      run: |
+        rm -rf ~/old
+        if [ -f ~/app ]; then
+          mv ~/app ~/old
+        fi
+    - name: Move Website
+      run: |
+        mv bin/release/net5.0/publish ~/app
+        mv ~/appsettings.json ~/app
+    - name: Restart Website
+      run: sudo systemctl restart fdownlstorage
