@@ -47,6 +47,7 @@ namespace Fdownl_Storage.Controllers
             public int Lifetime { get; set; }
             public string Code { get; set; }
             public string Password { get; set; }
+            public bool Public { get; set; }
         }
 
         public class UploadResult
@@ -115,6 +116,7 @@ namespace Fdownl_Storage.Controllers
             string hostname = HttpContext.Request.Host.Value;
             string password = uploadForm.Password;
             bool isEncrypted = !string.IsNullOrEmpty(password);
+            bool isPublic = uploadForm.Public;
 
             string originalFilename;
             if (uploadForm.Files.Count == 1)
@@ -233,7 +235,8 @@ namespace Fdownl_Storage.Controllers
                 Size = fileSize,
                 IsEncrypted = isEncrypted,
                 ZipContents = zipContents,
-                Coupon = couponCode
+                Coupon = couponCode,
+                IsPublic = isPublic
             };
             await _databaseContext.UploadedFiles.AddAsync(uploadedFile);
             await _databaseContext.SaveChangesAsync();

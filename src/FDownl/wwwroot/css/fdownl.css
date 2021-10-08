@@ -1,7 +1,15 @@
+.no-stretch {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.history-link {
+    color: cadetblue;
+    transition: all .2s ease;
+}
+
 ul {
 	list-style-type: square;
-    /*list-style-type: "\251c\2500\20";*/
-	/*2514*/
 }
 
 a {
@@ -71,9 +79,9 @@ input {
     border: none;
     border-radius: 20px;
     width: 100%;
-    height: 80%;
     margin: 50px auto;
     margin-top: 0;
+    margin-bottom: 15px;
     padding: 0px;
     position: relative;
     z-index: 2;
@@ -154,6 +162,7 @@ hr {
     #drop-area {
         border: 2px dashed #ccc;
         width: 80%;
+        height: 70%;
         padding: 20px;
     }
 }

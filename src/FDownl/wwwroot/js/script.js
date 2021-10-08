@@ -171,6 +171,7 @@ $("#upload_btn").click(function (e) {
 	$("#progress-wrp").fadeIn(1000);
 	formData.set("lifetime", document.getElementById("lifetime").value);
 	formData.set("code", document.getElementById("coupon_code").value);
+	formData.set("public", document.getElementById("public").value);
 	if (document.getElementById("isEncrypted").checked) {
 		formData.set("password", document.getElementById("password").value);
 	} else {
