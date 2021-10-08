@@ -21,7 +21,7 @@ jobs:
     - name: Backup Old Website
       run: |
         rm -rf ~/old
-        if [ -f ~/app ]; then
+        if [ -d ~/app ]; then
           mv ~/app ~/old
         fi
     - name: Move Website
