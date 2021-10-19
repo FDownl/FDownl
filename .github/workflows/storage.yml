@@ -1,4 +1,4 @@
-name: Website Deploy
+name: Storage Deploy
 
 on:
   push:
@@ -6,10 +6,10 @@ on:
 
 jobs:
   deploy:
-    runs-on: website-server
+    runs-on: storage-server
     defaults:
       run:
-        working-directory: ./src/FDownl
+        working-directory: "./src/Fdownl Storage"
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -29,4 +29,4 @@ jobs:
         mv bin/release/net5.0/publish ~/app
         cp ~/appsettings.json ~/app
     - name: Restart Website
-      run: sudo systemctl restart fdownl
+      run: sudo systemctl restart fdownlstorage
