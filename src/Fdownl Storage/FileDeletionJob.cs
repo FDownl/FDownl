@@ -1,6 +1,7 @@
 ﻿using FDownl_Shared_Resources;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Quartz;
@@ -18,12 +19,14 @@ namespace Fdownl_Storage
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<FileDeletionJob> _logger;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IConfiguration _configuration;
 
-        public FileDeletionJob(IServiceProvider serviceProvider, ILogger<FileDeletionJob> logger, IWebHostEnvironment webHostEnvironment)
+        public FileDeletionJob(IServiceProvider serviceProvider, ILogger<FileDeletionJob> logger, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
         {
             _serviceProvider = serviceProvider;
             _logger = logger;
             _webHostEnvironment = webHostEnvironment;
+            _configuration = configuration;
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -42,8 +45,7 @@ namespace Fdownl_Storage
             
             foreach (var file in filesToDelete)
             {
-                 string contentRootPath = _webHostEnvironment.ContentRootPath;
-                 string mainUploadPath = Path.Combine(contentRootPath, "Uploads", "Main");
+                 string mainUploadPath = Path.Combine(_configuration.GetValue<string>("UploadsPath"), "Main");
                  if (Directory.Exists(mainUploadPath))
                  {
                       string filePath = Path.Combine(mainUploadPath, file.RandomId + "-" + file.Filename);
