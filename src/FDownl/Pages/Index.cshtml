@@ -22,7 +22,7 @@
                 <input class="form-control" type="file" id="files" multiple required>
             </div>
             <div id="page-mask"></div>
-            <a class="history-link" href="#" data-bs-toggle="modal" data-bs-target="#history">View Upload History <i class="fas fa-history"></i></a>
+            <a class="history-link" href="#" onclick="getHistory()" data-bs-toggle="modal" data-bs-target="#history">View Upload History <i class="fas fa-history"></i></a>
         </div>
         <div class="col-md-6 text-center p-3">
             <h4 class="mb-3">Options</h4>
@@ -81,38 +81,9 @@
             <div class="modal-body">
                 <div class="table-responsive text-center">
                     <table class="table table-striped table-light table-bordered m-0">
-                        <tbody>
-                            <tr>
-                                <th class="align-middle">potatoes_are_evil.mp4</th>
-                                <td class="no-stretch">
-                                    4d 17h 17m to deletion
-                                </td>
-                                <td class="no-stretch">
-                                    <a class="btn btn-secondary"><i class="fas fa-external-link-square-alt"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="align-middle">genshin_is_awesome.jpg</th>
-                                <td class="no-stretch">
-                                    12h 10m to deletion
-                                </td>
-                                <td class="no-stretch">
-                                    <a class="btn btn-secondary"><i class="fas fa-external-link-square-alt"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="align-middle">flare_on_is_bullying_me.rev</th>
-                                <td class="no-stretch">
-                                    20d 1h 39m to deletion
-                                </td>
-                                <td class="no-stretch">
-                                    <a class="btn btn-secondary"><i class="fas fa-external-link-square-alt"></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody id="history_table"></tbody>
                     </table>
                 </div>
-                <!--There are no files in your history.-->
             </div>
         </div>
     </div>

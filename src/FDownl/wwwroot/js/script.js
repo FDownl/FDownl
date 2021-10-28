@@ -8,6 +8,7 @@ var loadStorage = new Boolean(false);
 /* POST handling */
 var selector = document.getElementById("serverlocation");
 var upload = document.getElementById("upload_btn");
+var historytable = document.getElementById("history_table");
 
 
 /* Drop file selection handling */
@@ -140,6 +141,32 @@ function removeElement(i) {
 			selDiv.children[i].lastChild.id = i;
 		}
     }
+}
+
+
+// Retrieve user history from API
+function getHistory() {
+	historytable.innerHTML = "<tr><th>Loading...</th></tr>";
+	var xhttp2 = new XMLHttpRequest();
+	xhttp2.onreadystatechange = function () {
+		if (this.readyState == 4 && this.status == 200) {
+			var res = JSON.parse(this.responseText);
+			historytable.innerHTML = "";
+			if (res.length == 0)
+				historytable.innerHTML = "<tr><th>There are no files in your history.</th</tr>";
+			else {
+				for (var i = 0; i < res.length; i++) {
+					historytable.innerHTML += "<tr><th class=\"align-middle\">" + res[i].filename +
+						"</th><td class=\"no-stretch\">" + res[i].lifetime +
+						" to deletion</td><td class=\"no-stretch\">" +
+						"<a class=\"btn btn-secondary\"><i class=\"fas fa-external-link-square-alt\">" +
+						window.location.href + "/" + res[i].id + "</i></a></td></tr>";
+				}
+			}
+		}
+	};
+	xhttp2.open("GET", "/api/history/get", true);
+	xhttp2.send();
 }
 
 
