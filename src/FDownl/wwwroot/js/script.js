@@ -159,7 +159,7 @@ function getHistory() {
 					historytable.innerHTML += "<tr><th class=\"align-middle\">" + res[i].filename +
 						"</th><td class=\"no-stretch\">" + res[i].lifetime +
 						" to deletion</td><td class=\"no-stretch\">" +
-						"<a class=\"btn btn-secondary\" href=\"https://" + res[i].hostname + "/" + res[i].id + "\"><i class=\"fas fa-external-link-square-alt\"></i></a></td></tr>";
+						"<a class=\"btn btn-secondary\" href=\"https://" + res[i].hostname + "/" + res[i].randomId + "\"><i class=\"fas fa-external-link-square-alt\"></i></a></td></tr>";
 				}
 			}
 		}
