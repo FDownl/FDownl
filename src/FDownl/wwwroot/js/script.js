@@ -3,6 +3,11 @@ var selDiv = "";
 var filesSize = 0;
 var formPost = document.getElementById("form_post");
 var formData = new FormData(formPost);
+var loadStorage = new Boolean(false);
+
+/* POST handling */
+var selector = document.getElementById("serverlocation");
+var upload = document.getElementById("upload_btn");
 
 
 /* Drop file selection handling */
@@ -82,6 +87,14 @@ function handleFileSelect(e) {
 function handleFiles(files) {
 	var filesArr = Array.prototype.slice.call(files);
 
+	// Enable/Disable upload button
+	if (loadStorage) {
+		if (filesArr.length > 0)
+			upload.disabled = false;
+		else
+			upload.disabled = true;
+	}
+
 	Promise.all(filesArr.map(async (f) => { filesSize += f.size; })).then(() => {
 		if (filesSize > 100000000) {
 			alert("Uploaded files are bigger than 100MB!");
@@ -117,6 +130,11 @@ function removeElement(i) {
     }
 	if (selDiv.children.length == 0) {
 		$("#file-selection").fadeOut(1000);
+
+		// Enable/Disable upload button
+		if (loadStorage) {
+			upload.disabled = true;
+		}
 	} else {
 		for (var i = 0; i < selDiv.children.length; i++) {
 			selDiv.children[i].lastChild.id = i;
@@ -132,10 +150,6 @@ const code = urlParams.get('code');
 document.getElementById("coupon_code").value = code;
 
 
-/* POST handling */
-var selector = document.getElementById("serverlocation");
-var upload = document.getElementById("upload_btn");
-
 // Retrieve server locations
 selector.innerHTML = "<option value=\"\">Loading...</option>";
 var xhttp = new XMLHttpRequest();
@@ -146,7 +160,8 @@ xhttp.onreadystatechange = function () {
 		for (var i = 0; i < res.length; i++) {
 			selector.innerHTML += "<option value=\"" + res[i].hostname + "\">" + res[i].location + "</option>";
 		}
-		upload.disabled = false;
+		// upload.disabled = false;
+		loadStorage = true;
 	}
 };
 xhttp.open("GET", "/api/storageservers/get", true);
