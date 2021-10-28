@@ -156,10 +156,21 @@ function getHistory() {
 				historytable.innerHTML = "<tr><th>There are no files in your history.</th></tr>";
 			else {
 				for (var i = 0; i < res.length; i++) {
+					var timeToDeletion = "";
+					var lifetime = res[i].lifetime;
+					var uploadedAt = res[i].uploadedAt + "Z";
+					var deletedAt = new Date(); deletedAt.setSeconds(uploadedAt.getSeconds() + lifetime + 60);
+					var time = Math.floor(deletedAt - new Date()) / 1000;
+					var days = Math.floor(time / (60*60*24));
+					var hours = Math.floor((time / (60*60)) % 24);
+					var minutes = Math.floor((time / 60) % 60);
+					if (days != 0) timeToDeletion += days + "d ";
+					if (hours != 0) timeToDeletion += hours + "h ";
+					if (minutes != 0) timeToDeletion += minutes + "m ";
 					historytable.innerHTML += "<tr><th class=\"align-middle\">" + res[i].filename +
-						"</th><td class=\"no-stretch\">" + res[i].lifetime +
+						"</th><td class=\"no-stretch\">" + timeToDeletion +
 						" to deletion</td><td class=\"no-stretch\">" +
-						"<a class=\"btn btn-secondary\" href=\"https://" + res[i].hostname + "/" + res[i].randomId + "\"><i class=\"fas fa-external-link-square-alt\"></i></a></td></tr>";
+						"<a class=\"btn btn-secondary\" href=\"https://fdow.nl/" + res[i].randomId + "\"><i class=\"fas fa-external-link-square-alt\"></i></a></td></tr>";
 				}
 			}
 		}
