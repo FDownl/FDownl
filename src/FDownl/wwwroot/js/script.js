@@ -3,6 +3,12 @@ var selDiv = "";
 var filesSize = 0;
 var formPost = document.getElementById("form_post");
 var formData = new FormData(formPost);
+var loadStorage = new Boolean(false);
+
+/* POST handling */
+var selector = document.getElementById("serverlocation");
+var upload = document.getElementById("upload_btn");
+var historytable = document.getElementById("history_table");
 
 
 /* Drop file selection handling */
@@ -82,6 +88,14 @@ function handleFileSelect(e) {
 function handleFiles(files) {
 	var filesArr = Array.prototype.slice.call(files);
 
+	// Enable/Disable upload button
+	if (loadStorage) {
+		if (filesArr.length > 0)
+			upload.disabled = false;
+		else
+			upload.disabled = true;
+	}
+
 	Promise.all(filesArr.map(async (f) => { filesSize += f.size; })).then(() => {
 		if (filesSize > 100000000) {
 			alert("Uploaded files are bigger than 100MB!");
@@ -117,11 +131,42 @@ function removeElement(i) {
     }
 	if (selDiv.children.length == 0) {
 		$("#file-selection").fadeOut(1000);
+
+		// Enable/Disable upload button
+		if (loadStorage) {
+			upload.disabled = true;
+		}
 	} else {
 		for (var i = 0; i < selDiv.children.length; i++) {
 			selDiv.children[i].lastChild.id = i;
 		}
     }
+}
+
+
+// Retrieve user history from API
+function getHistory() {
+	historytable.innerHTML = "<tr><th>Loading...</th></tr>";
+	var xhttp2 = new XMLHttpRequest();
+	xhttp2.onreadystatechange = function () {
+		if (this.readyState == 4 && this.status == 200) {
+			var res = JSON.parse(this.responseText);
+			historytable.innerHTML = "";
+			if (res.length == 0)
+				historytable.innerHTML = "<tr><th>There are no files in your history.</th></tr>";
+			else {
+				for (var i = 0; i < res.length; i++) {
+					historytable.innerHTML += "<tr><th class=\"align-middle\">" + res[i].filename +
+						"</th><td class=\"no-stretch\">" + res[i].lifetime +
+						" to deletion</td><td class=\"no-stretch\">" +
+						"<a class=\"btn btn-secondary\"><i class=\"fas fa-external-link-square-alt\">" +
+						window.location.href + "/" + res[i].id + "</i></a></td></tr>";
+				}
+			}
+		}
+	};
+	xhttp2.open("GET", "/api/history/get", true);
+	xhttp2.send();
 }
 
 
@@ -131,10 +176,6 @@ const urlParams = new URLSearchParams(queryString);
 const code = urlParams.get('code');
 document.getElementById("coupon_code").value = code;
 
-
-/* POST handling */
-var selector = document.getElementById("serverlocation");
-var upload = document.getElementById("upload_btn");
 
 // Retrieve server locations
 selector.innerHTML = "<option value=\"\">Loading...</option>";
@@ -146,7 +187,8 @@ xhttp.onreadystatechange = function () {
 		for (var i = 0; i < res.length; i++) {
 			selector.innerHTML += "<option value=\"" + res[i].hostname + "\">" + res[i].location + "</option>";
 		}
-		upload.disabled = false;
+		// upload.disabled = false;
+		loadStorage = true;
 	}
 };
 xhttp.open("GET", "/api/storageservers/get", true);
@@ -171,6 +213,7 @@ $("#upload_btn").click(function (e) {
 	$("#progress-wrp").fadeIn(1000);
 	formData.set("lifetime", document.getElementById("lifetime").value);
 	formData.set("code", document.getElementById("coupon_code").value);
+	formData.set("public", document.getElementById("public").value);
 	if (document.getElementById("isEncrypted").checked) {
 		formData.set("password", document.getElementById("password").value);
 	} else {

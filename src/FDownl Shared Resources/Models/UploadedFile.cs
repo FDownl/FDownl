@@ -20,6 +20,7 @@ namespace FDownl_Shared_Resources.Models
         public string Coupon { get; set; }
         public bool IsEncrypted { get; set; }
         public string ZipContents { get; set; }
+        public bool IsPublic { get; set; }
         [Timestamp]
         public byte[] RowVersion { get; set; }
     }

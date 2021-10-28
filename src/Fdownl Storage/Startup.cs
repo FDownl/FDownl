@@ -51,8 +51,10 @@ namespace Fdownl_Storage
             services.AddControllers();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DatabaseContext context)
         {
+            context.Database.Migrate();
+
             app.UseForwardedHeaders(new ForwardedHeadersOptions { 
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto 
             });
