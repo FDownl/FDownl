@@ -159,7 +159,8 @@ function getHistory() {
 					var timeToDeletion = "";
 					var lifetime = res[i].lifetime;
 					var uploadedAt = new Date(res[i].uploadedAt + "Z");
-					var deletedAt = new Date(); deletedAt.setSeconds(uploadedAt.getSeconds() + lifetime + 60);
+					var deletedAt = new Date();
+					deletedAt.setSeconds(uploadedAt.getSeconds() + lifetime + 60);
 					var time = Math.floor(deletedAt - new Date()) / 1000;
 					var days = Math.floor(time / (60*60*24));
 					var hours = Math.floor((time / (60*60)) % 24);
