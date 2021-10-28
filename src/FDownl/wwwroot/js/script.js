@@ -153,7 +153,7 @@ function getHistory() {
 			var res = JSON.parse(this.responseText);
 			historytable.innerHTML = "";
 			if (res.length == 0)
-				historytable.innerHTML = "<tr><th>There are no files in your history.</th</tr>";
+				historytable.innerHTML = "<tr><th>There are no files in your history.</th></tr>";
 			else {
 				for (var i = 0; i < res.length; i++) {
 					historytable.innerHTML += "<tr><th class=\"align-middle\">" + res[i].filename +
