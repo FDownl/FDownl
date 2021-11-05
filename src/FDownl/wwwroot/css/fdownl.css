@@ -157,6 +157,11 @@ hr {
     line-height: 30px;
 }
 
+.highlighting {
+    text-align: left;
+    overflow: hidden;
+}
+
 @media only screen and (min-width: 768px) {
     /* For desktop: */
     #drop-area {
