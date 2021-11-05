@@ -45,7 +45,7 @@ namespace FDownl.Pages
         {
             string results = "";
             char[] c = new char [range];
-            string url = file.Hostname + file.RandomId + file.Filename;
+            string url = "https://" + file.Hostname + file.RandomId + file.Filename;
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
             HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
 
