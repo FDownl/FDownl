@@ -2,10 +2,27 @@
 @model ShareModel
 @using FDownl_Shared_Resources.Models;
 @using Newtonsoft.Json;
+@using System.IO;
+@using System.Net;
 
 @{
     var file = Model.UploadedFile;
-    string fileContent = Model.FileContent;
+
+    int range = 600;
+    string fileContent = null;
+    char[] c = new char[range];
+    string url = "https://" + file.Hostname + "/" + file.RandomId + "-" + file.Filename;
+    HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+    HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+
+    StreamReader sr = new StreamReader(resp.GetResponseStream());
+    sr.Read(c, 0, c.Length > (int)resp.ContentLength ? (int)resp.ContentLength : c.Length);
+    sr.Close();
+    fileContent = new string(c);
+    if (fileContent.Any(ch => char.IsControl(ch) && ch != '\r' && ch != '\n' && ch != '\t'))
+        fileContent = null;
+    else
+        fileContent += "...";
 
     DateTime now = DateTime.UtcNow;
     DateTime deletedAt = file.UploadedAt.AddSeconds(file.Lifetime);
@@ -59,7 +76,10 @@
 }
 
 @section Scripts {
-<script src="~/js/highlighting.js" asp-append-version="true"></script>
+    @if (fileContent != null)
+    {
+        <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    }
 }
 
 <div class="container py-3">
@@ -117,13 +137,9 @@
                     }
                     else if (fileContent != null)
                     {
-                        <div style="height: 200px;">
-                            <pre id="highlighting">
-                            <code class="language-html" id="highlighting-content">
+                        <pre class="highlighting prettyprint">
                             @(fileContent)
-                            </code>
-                            </pre>
-                        </div>
+                        </pre>
                     }
                     else
                     {
