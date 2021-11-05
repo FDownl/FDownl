@@ -46,22 +46,15 @@ namespace FDownl.Pages
             string results = "";
             char[] c = new char [range];
             string url = file.Hostname + file.RandomId + file.Filename;
-            try
-            {
-                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-                HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
 
-                StreamReader sr = new StreamReader(resp.GetResponseStream());
-                sr.Read(c, 0, c.Length > (int)resp.ContentLength ? c.Length : (int)resp.ContentLength);
-                sr.Close();
-                results = new string(c);
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-            if (results.Any(ch => char.IsControl(ch) && ch != '\r' && ch != '\n' && ch != '\t'))
-                return null;
+            StreamReader sr = new StreamReader(resp.GetResponseStream());
+            sr.Read(c, 0, c.Length > (int)resp.ContentLength ? c.Length : (int)resp.ContentLength);
+            sr.Close();
+            results = new string(c);
+            // if (results.Any(ch => char.IsControl(ch) && ch != '\r' && ch != '\n' && ch != '\t'))
+            //     return null;
             return results;
         }
     }
