@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,8 +17,10 @@ namespace FDownl.Pages
     {
         private readonly ILogger<ShareModel> _logger;
         private readonly DatabaseContext _context;
+        private readonly int range = 1000;
 
         public UploadedFile UploadedFile { get; set; }
+        public string FileContent = null;
 
         public ShareModel(ILogger<ShareModel> logger, DatabaseContext context) {
             _logger = logger;
@@ -31,7 +35,34 @@ namespace FDownl.Pages
             if (UploadedFile == null)
                 return NotFound();
             else
+            {
+                FileContent = HasBinaryContent(UploadedFile);
                 return Page();
+            }
+        }
+
+        public string HasBinaryContent(UploadedFile file)
+        {
+            string results = "";
+            char[] c = new char [range];
+            string url = file.Hostname + file.RandomId + file.Filename;
+            try
+            {
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+
+                StreamReader sr = new StreamReader(resp.GetResponseStream());
+                sr.Read(c, 0, c.Length > (int)resp.ContentLength ? c.Length : (int)resp.ContentLength);
+                sr.Close();
+                results = new string(c);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            if (results.Any(ch => char.IsControl(ch) && ch != '\r' && ch != '\n' && ch != '\t'))
+                return null;
+            return results;
         }
     }
 }

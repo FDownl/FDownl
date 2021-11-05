@@ -5,6 +5,7 @@
 
 @{
     var file = Model.UploadedFile;
+    string fileContent = Model.FileContent;
 
     DateTime now = DateTime.UtcNow;
     DateTime deletedAt = file.UploadedAt.AddSeconds(file.Lifetime);
@@ -14,19 +15,19 @@
     string timeToDeletion = "";
     string size = "";
 
-        string extension = System.IO.Path.GetExtension(file.Filename);
-        bool isImage = new string[] { ".jpeg", ".jpg", ".png", ".gif" }.Contains(extension);
-        bool isAudio = new string[] { ".mp3", ".wav" }.Contains(extension);
-        bool isVideo = new string[] { ".mp4" }.Contains(extension);
-        var time = (deletedAt - now).Add(TimeSpan.FromMinutes(1));
-        if (time.Days != 0) timeToDeletion += time.Days + "d ";
-        if (time.Hours != 0) timeToDeletion += time.Hours + "h ";
-        if (time.Minutes != 0) timeToDeletion += time.Minutes + "m ";
-        long s;
-        if ((s = file.Size / (1024 * 1024)) != 0) size = s + "MB";
-        else if ((s = file.Size / 1024) != 0) size = s + "KB";
-        else size = file.Size + "B";
-        string isEncrypted = file.IsEncrypted ? "Yes" : "No";
+    string extension = System.IO.Path.GetExtension(file.Filename);
+    bool isImage = new string[] { ".jpeg", ".jpg", ".png", ".gif" }.Contains(extension);
+    bool isAudio = new string[] { ".mp3", ".wav" }.Contains(extension);
+    bool isVideo = new string[] { ".mp4" }.Contains(extension);
+    var time = (deletedAt - now).Add(TimeSpan.FromMinutes(1));
+    if (time.Days != 0) timeToDeletion += time.Days + "d ";
+    if (time.Hours != 0) timeToDeletion += time.Hours + "h ";
+    if (time.Minutes != 0) timeToDeletion += time.Minutes + "m ";
+    long s;
+    if ((s = file.Size / (1024 * 1024)) != 0) size = s + "MB";
+    else if ((s = file.Size / 1024) != 0) size = s + "KB";
+    else size = file.Size + "B";
+    string isEncrypted = file.IsEncrypted ? "Yes" : "No";
 
     int j = 0;
 }
@@ -38,7 +39,7 @@
             @foreach (var f in folder.Folders)
             {
                 j += 1;
-            <li data-bs-toggle="collapse" href="#folder@(j)" role="button" aria-expanded="false"><b>@f.Name <i class="fas fa-chevron-down"></i></b></li>
+                <li data-bs-toggle="collapse" href="#folder@(j)" role="button" aria-expanded="false"><b>@f.Name <i class="fas fa-chevron-down"></i></b></li>
                 ShowFolderContents(f);
             }
             @foreach (var f in folder.Files)
@@ -57,67 +58,81 @@
     }
 }
 
+@section Scripts {
+<script src="~/js/highlighting.js" asp-append-version="true"></script>
+}
+
 <div class="container py-3">
     <div class="text-center">
-            <div class="row my-3">
-                <h4 class="text-center">@file.Filename</h4>
-                <hr />
-                <div class="col-md-6 text-start d-flex flex-column">
-                    <ul class="list-group my-3">
-                        <li class="list-group-item"><b>Size: </b>@size</li>
-                        <li class="list-group-item"><b>Lifetime: </b>@timeToDeletion</li>
-                        <li class="list-group-item"><b>Protected: </b>@isEncrypted</li>
-                    </ul>
-                    <div class="my-3 mt-auto">
-                        <a class="btn btn-outline-dark text-center w-100 border-3 py-3 fw-bold" href="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)">DOWNLOAD FILE</a>
-                    </div>
-                </div>
-                <div class="col-md-6 d-flex flex-column">
-                    @{
-                        if (isImage)
-                        {
-                            <div class="m-auto">
-                                <div class="my-3">
-                                    <img class="mw-100" src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)">
-                                </div>
-                            </div>
-                        }
-                        else if (isAudio)
-                        {
-                            <div class="m-auto">
-                                <div class="my-3">
-                                    <audio class="mw-100" src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)" controls>
-                                        Your browser doesn't support HTML5 audio.
-                                    </audio>
-                                </div>
-                            </div>
-                        }
-                        else if (isVideo)
-                        {
-                            <div class="m-auto">
-                                <div class="my-3">
-                                    <video class="mw-100" controls>
-                                        <source src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)" type="video/mp4" />
-                                        Your browser doesn't support HTML5 video.
-                                    </video>
-                                </div>
-                            </div>
-                        }
-                        else if (!string.IsNullOrEmpty(file.ZipContents))
-                        {
-                <div class="text-start">
-                    <b data-bs-toggle="collapse" href="#folder0" role="button" aria-expanded="false">Zip Contents <i class="fas fa-chevron-down"></i></b>
-                    @{ShowFolderContents(JsonConvert.DeserializeObject<Folder>(file.ZipContents));}
-                </div>
-                        }
-                        else
-                        {
-                            <div class="m-auto">
-                                <p>Looks like this file cannot be previewed.</p>
-                            </div>
-                        }
-                    }
+        <div class="row my-3">
+            <h4 class="text-center">@file.Filename</h4>
+            <hr />
+            <div class="col-md-6 text-start d-flex flex-column">
+                <ul class="list-group my-3">
+                    <li class="list-group-item"><b>Size: </b>@size</li>
+                    <li class="list-group-item"><b>Lifetime: </b>@timeToDeletion</li>
+                    <li class="list-group-item"><b>Protected: </b>@isEncrypted</li>
+                </ul>
+                <div class="my-3 mt-auto">
+                    <a class="btn btn-outline-dark text-center w-100 border-3 py-3 fw-bold" href="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)">DOWNLOAD FILE</a>
                 </div>
             </div>
+            <div class="col-md-6 d-flex flex-column">
+                @{
+                    if (isImage)
+                    {
+                        <div class="m-auto">
+                            <div class="my-3">
+                                <img class="mw-100" src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)">
+                            </div>
+                        </div>
+                    }
+                    else if (isAudio)
+                    {
+                        <div class="m-auto">
+                            <div class="my-3">
+                                <audio class="mw-100" src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)" controls>
+                                    Your browser doesn't support HTML5 audio.
+                                </audio>
+                            </div>
+                        </div>
+                    }
+                    else if (isVideo)
+                    {
+                        <div class="m-auto">
+                            <div class="my-3">
+                                <video class="mw-100" controls>
+                                    <source src="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)" type="video/mp4" />
+                                    Your browser doesn't support HTML5 video.
+                                </video>
+                            </div>
+                        </div>
+                    }
+                    else if (!string.IsNullOrEmpty(file.ZipContents))
+                    {
+                        <div class="text-start">
+                            <b data-bs-toggle="collapse" href="#folder0" role="button" aria-expanded="false">Zip Contents <i class="fas fa-chevron-down"></i></b>
+                            @{ShowFolderContents(JsonConvert.DeserializeObject<Folder>(file.ZipContents));}
+                        </div>
+                    }
+                    else if (fileContent != null)
+                    {
+                        <div style="height: 200px;">
+                            <pre id="highlighting">
+                            <code class="language-html" id="highlighting-content">
+                            @(fileContent)
+                            </code>
+                            </pre>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="m-auto">
+                            <p>Looks like this file cannot be previewed.</p>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
     </div>
 </div>
