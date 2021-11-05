@@ -159,7 +159,8 @@ hr {
 
 .highlighting {
     text-align: left;
-    overflow: hidden;
+    overflow-x: scroll;
+    overflow-y: hidden;
 }
 
 @media only screen and (min-width: 768px) {
