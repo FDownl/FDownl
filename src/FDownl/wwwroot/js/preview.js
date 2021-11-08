@@ -10,7 +10,7 @@ if (displayDiv != null) {
 	xhttp.onreadystatechange = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			var res = this.responseText;
-			if (/^[ -~\t\n\r]+$/.test(resStart)) {
+			if (/^[ -~\t\n\r]+$/.test(res)) {
 				displayDiv.innerHTML = "<pre class=\"prettyprint\">" + res + "</pre>";
 				prettyPrint();
 			} else {
