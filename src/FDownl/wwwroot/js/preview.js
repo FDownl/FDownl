@@ -10,8 +10,6 @@ if (displayDiv != null) {
 	xhttp.onreadystatechange = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			var res = this.responseText;
-			const resLen = res.length;
-			var resStart = res.substring(0, resLen > range ? range : resLen);
 			if (/^[ -~\t\n\r]+$/.test(resStart)) {
 				displayDiv.innerHTML = "<pre class=\"prettyprint\">" + resStart + "</pre>";
 				prettyPrint();
@@ -21,5 +19,6 @@ if (displayDiv != null) {
 		}
 	};
 	xhttp.open("GET", downloadDiv.href, true);
+        xhttp.setRequestHeader("Range", "bytes=-" + range);
 	xhttp.send();
 }
