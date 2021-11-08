@@ -8,7 +8,7 @@ if (displayDiv != null) {
     displayDiv.innerHTML = "<p>Loading...</p>";
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function () {
-		if (this.readyState == 4 && this.status == 200) {
+		if (this.readyState == 4 && this.status == 206) {
 			var res = this.responseText;
 			if (/^[ -~\t\n\r]+$/.test(res)) {
 				displayDiv.innerHTML = "<pre class=\"prettyprint\">" + res + "</pre>";
