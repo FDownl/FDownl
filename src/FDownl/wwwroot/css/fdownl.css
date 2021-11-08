@@ -151,6 +151,7 @@ hr {
 .remove-file-btn {
     font-weight: bold;
     border-width: 2px;
+    margin-left: auto;
 }
 
 .file-text{
