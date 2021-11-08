@@ -158,9 +158,14 @@ hr {
 }
 
 .highlighting {
+    height: 70vh;
     text-align: left;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    overflow: scroll;
+}
+
+.prettyprint {
+    overflow: unset !important;
+    border: 0 !important;
 }
 
 @media only screen and (min-width: 768px) {
