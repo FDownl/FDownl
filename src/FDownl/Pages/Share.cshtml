@@ -55,11 +55,10 @@
 }
 
 @section Scripts {
-    @if (file != null)
-    {
-        <script src="~/js/prettify/prettify.js" asp-append-version="true"></script>
-        <script src="~/js/preview.js" asp-append-version="true"></script>
-    }
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
+    <script> new ClipboardJS(document.getElementById('curl-copy'))</script>
+    <script src="~/js/prettify/prettify.js" asp-append-version="true"></script>
+    <script src="~/js/preview.js" asp-append-version="true"></script>
 }
 
 <div class="container py-3">
@@ -74,6 +73,12 @@
                     <li class="list-group-item"><b>Protected: </b>@isEncrypted</li>
                 </ul>
                 <div class="my-3 mt-auto">
+                    <div class="input-group mb-3">
+                    <input id="curl-cmd" type="text" class="form-control"
+                        value='curl "https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)" -o "@(file.Filename)"'
+                        readonly>
+                    <button id="curl-copy" class="btn btn-secondary" type="button" data-clipboard-target="#curl-cmd">Copy</button>
+                    </div>
                     <a class="btn btn-outline-dark text-center w-100 border-3 py-3 fw-bold" href="https://@(file.Hostname)/@(file.RandomId)-@(file.Filename)" id="download-link">DOWNLOAD FILE</a>
                 </div>
             </div>
