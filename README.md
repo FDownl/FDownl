@@ -16,9 +16,9 @@ To Be Updated
 
 ## Installation
 
-#### Install .NET Core SDK 5.0
+#### Install .NET Core SDK 6.0
 
-Please visit [https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu](https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu) for instructions on how to install .NET Core SDK 5.0 in your Ubuntu distribution.
+Please visit [https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu](https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu) for instructions on how to install .NET Core SDK 6.0 in your Ubuntu distribution.
 
 #### Clone FDownl
 
@@ -36,7 +36,7 @@ Please view [Customization Section](#Customization)
 dotnet publish -c release
 ```
 
-NOTE: published apps are usually under `[project_folder]/bin/Release/net5.0/publish/` directories.
+NOTE: published apps are usually under `[project_folder]/bin/Release/net6.0/publish/` directories.
 
 #### Execute the app
 
