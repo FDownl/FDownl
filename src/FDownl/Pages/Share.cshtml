@@ -50,11 +50,8 @@
 }
 
 @section Og {
-    @if (file != null)
-    {
-        <meta property="og:title" content="@file.Filename" />
-        <meta property="og:description" content="@($"Check out \"{file.Filename}\" on FDownl")" />
-    }
+    <meta property="og:title" content="@file.Filename" />
+    <meta property="og:description" content="@($"Check out \"{file.Filename}\" on FDownl")" />
 }
 
 @section Scripts {
