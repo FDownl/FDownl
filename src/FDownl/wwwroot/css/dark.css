@@ -1,0 +1,103 @@
+#upload_btn {
+    color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+
+#upload_btn:hover {
+    color: #000;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+
+#upload_btn:disabled {
+    color: #f8f9fa;
+    background-color: transparent;
+}
+
+.btn-outline {
+    color: #fffd;
+    background-color: #212529;
+    border-color: #212529;
+}
+
+.btn-outline:hover {
+    color: #fff;
+}
+
+.navbar-brand {
+    filter: invert(100%) sepia(100%) saturate(1%) hue-rotate(20deg) brightness(103%) contrast(101%);
+}
+
+.upload-icon {
+    filter: invert(100%) sepia(100%) saturate(1%) hue-rotate(20deg) brightness(103%) contrast(101%);
+}
+
+.modal-content {
+    background-color: #1a1a1a;
+}
+
+.btn-close {
+    filter: invert(100%) sepia(0%) saturate(7500%) hue-rotate(210deg) brightness(107%) contrast(100%);
+}
+
+.nav-item {
+    color: #fffd !important;
+}
+
+select {
+    color: #fffd !important;
+    background-color: inherit !important;
+}
+
+option {
+    color: #fffd !important;
+    background-color: #000000f0 !important;
+}
+
+input[type="text" i] {
+    color: #fffd !important;
+    background-color: inherit !important;
+}
+
+.history-link {
+    color: #fffd;
+    transition: all .2s ease;
+}
+
+body {
+    color: #fffd;
+    background-color: #000000f0;
+}
+
+nav {
+    background-color: black;
+}
+
+footer {
+    background-color: black;
+}
+
+.list-group li {
+    border-color: #fffd !important;
+    color: #fffd !important;
+}
+
+.list-group li:last-child {
+    border-color: #fffd !important;
+}
+
+#progress-wrp .progress-bar {
+    background-color: #fffd !important;
+}
+
+#progress-wrp {
+    border-color: #fffd;
+}
+
+#progress-wrp .status span {
+    background-color: #0f0f0f;
+}
+
+#drop-area {
+    border-color: #fffd;
+}

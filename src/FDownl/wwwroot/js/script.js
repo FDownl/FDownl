@@ -1,4 +1,4 @@
-/* Global variables */
+﻿/* Global variables */
 var selDiv = "";
 var filesSize = 0;
 var formPost = document.getElementById("form_post");
@@ -8,7 +8,7 @@ var loadStorage = new Boolean(false);
 /* POST handling */
 var selector = document.getElementById("serverlocation");
 var upload = document.getElementById("upload_btn");
-var historytable = document.getElementById("history_table");
+var historydiv = document.getElementById("history_div");
 
 
 /* Drop file selection handling */
@@ -70,7 +70,7 @@ function progressHandling (event) {
 		percent = Math.ceil(position / total * 100);
 	}
 	$(progress_bar_id + " .progress-bar").css("width", +percent + "%");
-	$(progress_bar_id + " .status").text((percent < 100) ? (percent + "%") : ("Uploading..."));
+	$(progress_bar_id + " .status span").text((percent < 100) ? (percent + "%") : ("Uploading..."));
 };
 
 function handleFileSelect(e) {
@@ -146,14 +146,14 @@ function removeElement(i) {
 
 // Retrieve user history from API
 function getHistory() {
-	historytable.innerHTML = "<tr><th>Loading...</th></tr>";
+	historydiv.innerHTML = "<tr><th>Loading...</th></tr>";
 	var xhttp2 = new XMLHttpRequest();
 	xhttp2.onreadystatechange = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			var res = JSON.parse(this.responseText);
-			historytable.innerHTML = "";
+			historydiv.innerHTML = "";
 			if (res.length == 0)
-				historytable.innerHTML = "<tr><th>There are no files in your history.</th></tr>";
+				historydiv.innerHTML = "There are no files in your history.";
 			else {
 				for (var i = 0; i < res.length; i++) {
 					var timeToDeletion = "";
@@ -167,10 +167,9 @@ function getHistory() {
 					if (days != 0) timeToDeletion += days + "d ";
 					if (hours != 0) timeToDeletion += hours + "h ";
 					if (minutes != 0) timeToDeletion += minutes + "m ";
-					historytable.innerHTML += "<tr><th class=\"align-middle\">" + res[i].filename +
-						"</th><td class=\"no-stretch\">" + timeToDeletion +
-						" to deletion</td><td class=\"no-stretch\">" +
-						"<a class=\"btn btn-secondary\" href=\"https://fdow.nl/" + res[i].randomId + "\"><i class=\"fas fa-external-link-square-alt\"></i></a></td></tr>";
+					historydiv.innerHTML += "<div class=\"bigger-text pb-1\"><a href=\"https://fdow.nl/" + res[i].randomId + "\"> ➜ " + res[i].filename +
+						" - " + timeToDeletion +
+						" to deletion</a></div>";
 				}
 			}
 		}
