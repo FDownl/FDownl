@@ -101,3 +101,7 @@ footer {
 #drop-area {
     border-color: #fffd;
 }
+
+.highlighting {
+    filter: invert(100%);
+}
