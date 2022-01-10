@@ -104,4 +104,5 @@ footer {
 
 .highlighting {
     filter: invert(100%);
+    color: #212529;
 }
