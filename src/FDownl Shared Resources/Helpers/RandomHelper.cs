@@ -11,7 +11,7 @@ namespace FDownl_Shared_Resources.Helpers
     {
         public static string GenerateRandomString(int length = 32, string charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
         {
-            using var rng = new RNGCryptoServiceProvider();
+            using var rng = new RandomNumberGenerator();
             var bytes = new byte[4 * length];
             rng.GetBytes(bytes);
 
