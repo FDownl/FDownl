@@ -193,3 +193,8 @@ hr {
     padding: 0.2rem 0.3rem;
     border-radius: 5px;
 }
+
+.gold-glow {
+    color: gold !important;
+    text-shadow: 0 0 5px;
+}

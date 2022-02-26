@@ -8,7 +8,7 @@
     color: #fff;
 }
 
-.nav-item {
+.nav-item:not(.gold-glow) {
     color: #0c203c !important;
 }
 
