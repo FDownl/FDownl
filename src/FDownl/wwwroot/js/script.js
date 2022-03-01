@@ -97,8 +97,8 @@ function handleFiles(files) {
 	}
 
 	Promise.all(filesArr.map(async (f) => { filesSize += f.size; })).then(() => {
-		if (filesSize > 100000000) {
-			alert("Uploaded files are bigger than 100MB!");
+		if (filesSize > 150000000) {
+			alert("Uploaded files are bigger than 150MB!");
 			return;
 		}
 		$("#file-selection").fadeIn(1000);

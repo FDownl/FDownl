@@ -60,7 +60,7 @@ namespace Fdownl_Storage.Controllers
         [HttpPost]
         [Route("/upload")]
         [EnableCors]
-        [RequestSizeLimit(100 * 1024 * 1024)] // 100MB
+        [RequestSizeLimit(150 * 1024 * 1024)] // 150MB
         public async Task<IActionResult> Index(UploadForm uploadForm)
         {
             if (!ModelState.IsValid)
@@ -93,10 +93,10 @@ namespace Fdownl_Storage.Controllers
             long sumSizeLastMinute = uploadedFilesLastMinute.Sum(x => x.Size);
             long sumSizeLastHour = uploadedFilesLastHour.Sum(x => x.Size);
             long sumSizeLastDay = uploadedFilesLastDay.Sum(x => x.Size);
-            //100MB limit per minute
-            //300MB limit per hour
-            //1000MB limit per day
-            if (sumSizeLastMinute > 100 * 1024 * 1024 || sumSizeLastHour > 300 * 1024 * 1024 || sumSizeLastDay > 1000 * 1024 * 1024) return true;
+            //150MB limit per minute
+            //450MB limit per hour
+            //1500MB limit per day
+            if (sumSizeLastMinute > 150 * 1024 * 1024 || sumSizeLastHour > 450 * 1024 * 1024 || sumSizeLastDay > 1500 * 1024 * 1024) return true;
             return false;
         }
 
