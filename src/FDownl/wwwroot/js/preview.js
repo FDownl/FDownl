@@ -36,6 +36,6 @@ if (displayDiv != null) {
 		}
 	};
 	xhttp.open("GET", downloadDiv.href, true);
-        xhttp.setRequestHeader("Range", "bytes=-" + range);
+        xhttp.setRequestHeader("Range", "bytes=0-" + range);
 	xhttp.send();
 }
