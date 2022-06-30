@@ -1,6 +1,6 @@
 # FDownl
 
-FDownl is an innovating file sharing platform.
+FDownl is an innovative file sharing platform.
 
 **Website:** [https://fdow.nl](https:/fdow.nl)
 
