@@ -1,0 +1,13 @@
+version: "3.5"
+
+services:
+  fdownl:
+    build: web
+    ports:
+      - "443:443"
+    depends_on:
+      - storage
+  storage:
+    build: storage
+    ports:
+      - "3306:3306"
