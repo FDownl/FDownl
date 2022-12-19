@@ -1,0 +1,10 @@
+[Unit]
+Description=FDownl
+
+[Service]
+WorkingDirectory=/home/fdownl/app
+ExecStart=/usr/bin/dotnet "/home/fdownl/app/FDownl.dll"
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -7,7 +7,23 @@ services:
       - "443:443"
     depends_on:
       - storage
+    networks:
+      - fdownl-net
+
   storage:
     build: storage
+    volumes:
+      - type: volume
+        source: uploads
+        target: /Uploads
     ports:
       - "3306:3306"
+    networks:
+      - fdownl-net
+
+networks:
+  fdownl-net:
+    driver: bridge
+
+volumes:
+  uploads:
