@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  fdownl:
+    build:
+      context: ./
+      dockerfile: ./web/Dockerfile
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - storage
+      - fdownl_db
+    networks:
+      - fdownl-net
+
+  storage:
+    build:
+      context: ./
+      dockerfile: ./storage/Dockerfile
+    restart: always
+    ports:
+      - "5000:5001"
+    volumes:
+      - type: volume
+        source: uploads
+        target: /Uploads
+    depends_on:
+      - fdownl_db
+    networks:
+      - fdownl-net
+
+  fdownl_db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      - MYSQL_USER=fdownl
+      - MYSQL_DATABASE=fdownl
+      - MYSQL_ROOT_PASSWORD=password
+    ports:
+      - '3306:3306'
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - fdownl-net
+
+networks:
+  fdownl-net:
+    driver: bridge
+
+volumes:
+  uploads:
+  db:
