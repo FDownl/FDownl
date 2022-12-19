@@ -20,7 +20,7 @@ services:
       dockerfile: ./storage/Dockerfile
     restart: always
     ports:
-      - "5000:5001"
+      - "5001:5000"
     volumes:
       - type: volume
         source: uploads
@@ -32,9 +32,9 @@ services:
 
   fdownl_db:
     image: mysql:8.0
+    container_name: fdownl_db
     restart: always
     environment:
-      - MYSQL_USER=fdownl
       - MYSQL_DATABASE=fdownl
       - MYSQL_ROOT_PASSWORD=password
     ports:

@@ -1,4 +1,4 @@
-FROM okteto/dotnetcore:3
+FROM mcr.microsoft.com/dotnet/sdk:6.0
 
 RUN useradd -ms /bin/bash fdownl
 
@@ -7,22 +7,18 @@ USER root
 ARG fdownl="./src/FDownl"
 ADD ${fdownl} /home/fdownl/fdownl
 
-COPY ./web/appsettings.json ~/appsettings.json
+ARG fdownlshared="./src/FDownl Shared Resources"
+ARG localshared="/home/fdownl/FDownl Shared Resources"
+ADD ${fdownlshared} ${localshared}
 
 WORKDIR /home/fdownl/fdownl
 
 RUN dotnet publish -c release
 
-RUN rm -rf ~/old \
-    if [ -d ~/app ]; then \
-      mv ~/app ~/old \
-    fi
+USER fdownl
 
-RUN mv ~/bin/release/net?.0/publish ~/app && \
-    cp ~/appsettings.json ~/app
+RUN cp -r ./bin/release/net?.0/publish ~/app
 
-COPY ./web/fdownl.service /etc/systemd/system/fdownl.service
+COPY ./web/appsettings.json ~/app/appsettings.json
 
-RUN systemctl restart fdownl
-
-ENTRYPOINT /home/fdownl
+ENTRYPOINT ["/usr/bin/dotnet", "/home/fdownl/app/FDownl.dll"]
