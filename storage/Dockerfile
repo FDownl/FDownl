@@ -4,14 +4,10 @@ RUN useradd -ms /bin/bash fdownl
 
 USER root
 
-ARG fdownlstorage="./src/Fdownl Storage"
-ADD ${fdownlstorage} /home/fdownl/fdownlstorage
+ARG src="./src/"
+ADD ${src} /home/fdownl/src
 
-ARG fdownlshared="./src/FDownl Shared Resources"
-ARG localshared="/home/fdownl/FDownl Shared Resources"
-ADD ${fdownlshared} ${localshared}
-
-WORKDIR /home/fdownl/fdownlstorage
+WORKDIR /home/fdownl/src/Fdownl\ Storage
 
 RUN dotnet publish -c release
 
@@ -21,4 +17,4 @@ RUN cp -r ./bin/release/net?.0/publish ~/app
 
 COPY ./storage/appsettings.json ~/app/appsettings.json
 
-ENTRYPOINT ["/usr/bin/dotnet", "/home/fdownl/app/Fdownl Storage.dll"]
+CMD /usr/bin/dotnet /home/fdownl/app/Fdownl\ Storage.dll

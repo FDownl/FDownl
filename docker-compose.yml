@@ -12,7 +12,7 @@ services:
       - storage
       - fdownl_db
     networks:
-      - fdownl-net
+      - fdownl_net
 
   storage:
     build:
@@ -28,7 +28,7 @@ services:
     depends_on:
       - fdownl_db
     networks:
-      - fdownl-net
+      - fdownl_net
 
   fdownl_db:
     image: mysql:8.0
@@ -41,11 +41,12 @@ services:
       - '3306:3306'
     volumes:
       - db:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d/:ro
     networks:
-      - fdownl-net
+      - fdownl_net
 
 networks:
-  fdownl-net:
+  fdownl_net:
     driver: bridge
 
 volumes:
