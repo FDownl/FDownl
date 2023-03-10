@@ -44,7 +44,6 @@ services:
 
 networks:
   fdownl_net:
-    driver: bridge
 
 volumes:
   uploads:
