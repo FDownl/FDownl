@@ -4,29 +4,32 @@ services:
   fdownl:
     build:
       context: ./
-      dockerfile: ./web/Dockerfile
+      dockerfile: ./docker/web/Dockerfile
+    container_name: fdownl_server
+    dns:
+      - "1.1.1.1"
+      - "8.8.8.8"
     restart: always
     ports:
-      - "5000:5000"
-    depends_on:
-      - storage
-      - fdownl_db
+      - "80:80"
     networks:
       - fdownl_net
 
   storage:
     build:
       context: ./
-      dockerfile: ./storage/Dockerfile
+      dockerfile: ./docker/storage/Dockerfile
+    container_name: fdownl_storage
+    dns:
+      - "1.1.1.1"
+      - "8.8.8.8"
     restart: always
     ports:
-      - "5001:5000"
+      - "5000:5000"
     volumes:
       - type: volume
         source: uploads
         target: /Uploads
-    depends_on:
-      - fdownl_db
     networks:
       - fdownl_net
 
@@ -34,11 +37,13 @@ services:
     image: mysql:8.0
     container_name: fdownl_db
     restart: always
+    ports:
+      - "3306:3306"
     environment:
       - MYSQL_DATABASE=fdownl
-      - MYSQL_ROOT_PASSWORD=password
-    ports:
-      - '3306:3306'
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=fdownl_user
+      - MYSQL_PASSWORD=password
     networks:
       - fdownl_net
 
