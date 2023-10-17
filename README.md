@@ -12,7 +12,7 @@ If you are planning to use this app you will need access to:
 
 ## Customization
 
-To Be Updated
+To Be Updated.
 
 ## Installation
 
