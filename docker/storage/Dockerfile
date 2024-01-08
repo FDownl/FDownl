@@ -23,7 +23,6 @@ COPY ./docker/storage/appsettings.json ./appsettings.json
 
 USER root
 
-ADD https://github.com/vishnubob/wait-for-it/raw/master/wait-for-it.sh /wait-for-it.sh
-RUN chmod +x /wait-for-it.sh
+ENV ASPNETCORE_URLS=http://+:80
 
-ENTRYPOINT ["/wait-for-it.sh", "fdownl_db:3306", "-t", "30", "--", "/usr/bin/dotnet", "/home/fdownl/app/Fdownl Storage.dll"]
+ENTRYPOINT ["/usr/bin/dotnet", "/home/fdownl/app/Fdownl Storage.dll"]

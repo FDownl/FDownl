@@ -11,9 +11,11 @@ services:
       - "8.8.8.8"
     restart: always
     ports:
-      - "80:80"
+      - "8001:80"
     networks:
       - fdownl_net
+    depends_on:
+      - storage
 
   storage:
     build:
@@ -25,25 +27,11 @@ services:
       - "8.8.8.8"
     restart: always
     ports:
-      - "5000:5000"
+      - "8002:80"
     volumes:
       - type: volume
         source: uploads
         target: /Uploads
-    networks:
-      - fdownl_net
-
-  fdownl_db:
-    image: mysql:8.0
-    container_name: fdownl_db
-    restart: always
-    ports:
-      - "3306:3306"
-    environment:
-      - MYSQL_DATABASE=fdownl
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=fdownl_user
-      - MYSQL_PASSWORD=password
     networks:
       - fdownl_net
 
